@@ -52,10 +52,9 @@
   },
   "permissions": [
     "storage",
-    "background",
-    "*://*.twitch.tv/*",
-    "*://ndragomirov.github.io/*",
-    "notifications",
-    "tabs"
+    "https://*/*",
+    "http://*/*",
+    "tabs",
+    "notifications"
   ]
 }
