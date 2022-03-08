@@ -1,9 +1,8 @@
-<p align="center">
-    <font size="+3">Twitch Companion</font>
-    <br><br>
-    <img src="common/icons/64.png" />
-</p>
+# Twitch Companion 
 
+<p align="center">
+    <img align="center" src="common/icons/64.png" />
+</p>
 
 A way to easily interact with Twitch platform !
 
