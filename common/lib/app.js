@@ -1746,7 +1746,6 @@
   var gameVideos = (root.gameVideos = new GameLobbyVideos());
   var gameStreams = (root.gameStreams = new GameLobbyStreams());
   var followedChannels = (root.followedChannels = new FollowedChannels());
-  // var hosts = root.hosts = new Hosts;
 
   topstreams.update();
   games.update();
