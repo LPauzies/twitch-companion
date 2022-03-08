@@ -1,8 +1,7 @@
 (function () {
-
   var root = this;
 
-  var bgApp = root.bgApp = {};
+  var bgApp = (root.bgApp = {});
   bgApp.notificationIds = {};
   bgApp.dispatcher = _.clone(Backbone.Events);
 
@@ -15,9 +14,7 @@
   };
 
   bgApp.get = function (key) {
-    return key in localStorage ?
-      JSON.parse(localStorage[key]) :
-      undefined;
+    return key in localStorage ? JSON.parse(localStorage[key]) : undefined;
   };
 
   bgApp.set = function (key, val) {
@@ -38,41 +35,39 @@
   };
 
   bgApp.bindNotificationListeners = function () {
-
     if (bgApp.richNotificationsSupported()) {
-
       chrome.notifications.onClicked.addListener(function (notificationId) {
         var stream = bgApp.notificationIds[notificationId];
         if (stream) {
           stream.openStream();
         }
-        chrome.notifications.clear(notificationId, function () {
-
-        });
+        chrome.notifications.clear(notificationId, function () {});
       });
 
-      chrome.notifications.onClosed.addListener(function (notificationId, byUser) {
+      chrome.notifications.onClosed.addListener(function (
+        notificationId,
+        byUser
+      ) {
         delete bgApp.notificationIds[notificationId];
       });
     }
   };
 
-
   bgApp.downloadImageAsBlob = async function (url, type) {
     return new Promise((res, rej) => {
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', url, true);
-      xhr.responseType = 'arraybuffer';
+      xhr.open("GET", url, true);
+      xhr.responseType = "arraybuffer";
       xhr.onload = function () {
         var blob = new Blob([xhr.response], { type: type });
         res(URL.createObjectURL(blob));
       };
       xhr.onerror = function (err) {
         rej(err);
-      }
+      };
       xhr.send();
-    })
-  }
+    });
+  };
 
   bgApp.sendNotification = async function (streamList) {
     var displayCount = settings.get("notifyCount").get("value");
@@ -92,15 +87,22 @@
         async function getIcon() {
           return new Promise((res, rej) => {
             try {
-              let target = streamsToShow[num].get("user_id")
-              twitchApi.send("user", { id: target }, async function (err, resp) {
-                if (err) return rej(err);
-                let iconUrl = await bgApp.downloadImageAsBlob(resp.data[0].profile_image_url, "image/png");
-                res(iconUrl)
-              })
+              let target = streamsToShow[num].get("user_id");
+              twitchApi.send(
+                "user",
+                { id: target },
+                async function (err, resp) {
+                  if (err) return rej(err);
+                  let iconUrl = await bgApp.downloadImageAsBlob(
+                    resp.data[0].profile_image_url,
+                    "image/png"
+                  );
+                  res(iconUrl);
+                }
+              );
             } catch (e) {
               let iconUrl = defaultIcon;
-              res(iconUrl)
+              res(iconUrl);
             }
           });
         }
@@ -111,14 +113,17 @@
           let opt = {
             type: "basic",
             title: streamsToShow[num].get("name"),
-            message: streamsToShow[num].get("game_name") + "\n" + streamsToShow[num].get("title"),
-            iconUrl: iconUrl
-          }
+            message:
+              streamsToShow[num].get("game_name") +
+              "\n" +
+              streamsToShow[num].get("title"),
+            iconUrl: iconUrl,
+          };
           bgApp.notificationIds[notificationId] = streamsToShow[num];
           setTimeout(function () {
-            chrome.notifications.create(notificationId, opt, function () { });
+            chrome.notifications.create(notificationId, opt, function () {});
           }, sec);
-          sec = (sec + 1000);
+          sec = sec + 1000;
         } catch (e) {
           console.log("Notification error: ", e);
           delete bgApp.notificationIds[notificationId];
@@ -130,18 +135,22 @@
           let notificationId = _.uniqueId("TwitchCompanion.Notification.");
           var opt2 = {
             type: "basic",
-            title: "Twitch Now",
-            iconUrl: defaultIcon
-          }
+            title: "Twitch Companion",
+            iconUrl: defaultIcon,
+          };
           if (streamsOther.length > 3) {
             let moreStreamers = streamTitles.slice(0, 2);
-            opt2.message = moreStreamers.join("\n") + "\n" + utils.i18n.getMessage("m114") + (streamsOther.length - moreStreamers.length);
+            opt2.message =
+              moreStreamers.join("\n") +
+              "\n" +
+              utils.i18n.getMessage("m114") +
+              (streamsOther.length - moreStreamers.length);
           } else {
             let moreStreamers = streamTitles.slice(0, 3);
             opt2.message = moreStreamers.join("\n");
           }
           setTimeout(function () {
-            chrome.notifications.create(notificationId, opt2, function () { });
+            chrome.notifications.create(notificationId, opt2, function () {});
           }, sec);
         } catch (e) {
           delete bgApp.notificationIds[notificationId];
@@ -159,8 +168,8 @@
     text += "";
     text = text === "0" ? "" : text;
     utils.browserAction.setBadgeText({
-      text: text
-    })
+      text: text,
+    });
   };
 
   bgApp.sound = new Audio();
@@ -169,19 +178,19 @@
     if (bgApp.sound) {
       bgApp.sound.pause();
     }
-  }
+  };
 
   bgApp.playSound = function (path, volume, loop) {
     var sound = bgApp.sound;
 
-    if (typeof path === 'undefined') {
+    if (typeof path === "undefined") {
       return;
     }
 
-    if (typeof loop === 'undefined') {
+    if (typeof loop === "undefined") {
       loop = false;
     }
-    if (typeof volume === 'undefined') {
+    if (typeof volume === "undefined") {
       volume = 1;
     }
 
@@ -207,120 +216,120 @@
       select: true,
       opts: [
         {
-          "id": "any",
-          "name": "Any",
+          id: "any",
+          name: "Any",
         },
         {
-          "id": "ru",
-          "name": "Русский"
+          id: "ru",
+          name: "Русский",
         },
         {
-          "id": "en",
-          "name": "English"
+          id: "en",
+          name: "English",
         },
         {
-          "id": "da",
-          "name": "Dansk"
+          id: "da",
+          name: "Dansk",
         },
         {
-          "id": "de",
-          "name": "Deutsch"
+          id: "de",
+          name: "Deutsch",
         },
         {
-          "id": "es",
-          "name": "Español"
+          id: "es",
+          name: "Español",
         },
         {
-          "id": "fr",
-          "name": "Français"
+          id: "fr",
+          name: "Français",
         },
         {
-          "id": "it",
-          "name": "Italiano"
+          id: "it",
+          name: "Italiano",
         },
         {
-          "id": "hu",
-          "name": "Magyar"
+          id: "hu",
+          name: "Magyar",
         },
         {
-          "id": "nl",
-          "name": "Nederlands"
+          id: "nl",
+          name: "Nederlands",
         },
         {
-          "id": "no",
-          "name": "Norsk"
+          id: "no",
+          name: "Norsk",
         },
         {
-          "id": "pl",
-          "name": "Polski"
+          id: "pl",
+          name: "Polski",
         },
         {
-          "id": "pt",
-          "name": "Português"
+          id: "pt",
+          name: "Português",
         },
         {
-          "id": "sk",
-          "name": "Slovenčina"
+          id: "sk",
+          name: "Slovenčina",
         },
         {
-          "id": "fi",
-          "name": "Suomi"
+          id: "fi",
+          name: "Suomi",
         },
         {
-          "id": "sv",
-          "name": "Svenska"
+          id: "sv",
+          name: "Svenska",
         },
         {
-          "id": "vi",
-          "name": "Tiếng Việt"
+          id: "vi",
+          name: "Tiếng Việt",
         },
         {
-          "id": "tr",
-          "name": "Türkçe"
+          id: "tr",
+          name: "Türkçe",
         },
         {
-          "id": "cs",
-          "name": "Čeština"
+          id: "cs",
+          name: "Čeština",
         },
         {
-          "id": "el",
-          "name": "Ελληνικά"
+          id: "el",
+          name: "Ελληνικά",
         },
         {
-          "id": "bg",
-          "name": "Български"
+          id: "bg",
+          name: "Български",
         },
         {
-          "id": "ar",
-          "name": "العربية"
+          id: "ar",
+          name: "العربية",
         },
         {
-          "id": "th",
-          "name": "ภาษาไทย"
+          id: "th",
+          name: "ภาษาไทย",
         },
         {
-          "id": "zh",
-          "name": "中文"
+          id: "zh",
+          name: "中文",
         },
         {
-          "id": "ja",
-          "name": "日本語"
+          id: "ja",
+          name: "日本語",
         },
         {
-          "id": "ko",
-          "name": "한국어"
+          id: "ko",
+          name: "한국어",
         },
         {
-          "id": "asl",
-          "name": "American Sign Language"
+          id: "asl",
+          name: "American Sign Language",
         },
         {
-          "id": "other",
-          "name": "__MSG_m106__"
-        }
+          id: "other",
+          name: "__MSG_m106__",
+        },
       ],
       show: true,
-      value: 'any'
+      value: "any",
     },
     {
       id: "windowHeight",
@@ -331,7 +340,7 @@
       tip: "px",
       min: 360,
       max: 590,
-      value: 590
+      value: 590,
     },
     {
       id: "defaultTab",
@@ -341,10 +350,10 @@
       opts: [
         { id: "following", name: "__MSG_m67__" },
         { id: "browse", name: "__MSG_m68__" },
-        { id: "topstreams", name: "__MSG_m69__" }
+        { id: "topstreams", name: "__MSG_m69__" },
       ],
       show: true,
-      value: "following"
+      value: "following",
     },
     {
       id: "viewSort",
@@ -357,10 +366,10 @@
         { id: "user_login|1", name: "__MSG_m12__" },
         { id: "user_login|-1", name: "__MSG_m13__" },
         { id: "game_name|1", name: "__MSG_m82__" },
-        { id: "started_at|-1", name: "__MSG_m14__" }
+        { id: "started_at|-1", name: "__MSG_m14__" },
       ],
       show: true,
-      value: "viewer_count|-1"
+      value: "viewer_count|-1",
     },
     {
       id: "themeType",
@@ -369,10 +378,10 @@
       radio: true,
       opts: [
         { id: "dark", name: "__MSG_m56__" },
-        { id: "white", name: "__MSG_m57__" }
+        { id: "white", name: "__MSG_m57__" },
       ],
       show: true,
-      value: "white"
+      value: "white",
     },
     {
       id: "simpleView",
@@ -380,7 +389,7 @@
       checkbox: true,
       type: "checkbox",
       show: true,
-      value: false
+      value: false,
     },
     {
       id: "openStreamIn",
@@ -391,10 +400,10 @@
         { id: "newlayout", name: "__MSG_m16__" },
         { id: "popout", name: "__MSG_m17__" },
         { id: "theatrelayout", name: "__MSG_m88__" },
-        { id: "html5", name: "__MSG_m101__" }
+        { id: "html5", name: "__MSG_m101__" },
       ],
       show: true,
-      value: "newlayout"
+      value: "newlayout",
     },
     {
       id: "openChatIn",
@@ -403,10 +412,10 @@
       radio: true,
       opts: [
         { id: "newwindow", name: "__MSG_m18__" },
-        { id: "newtab", name: "__MSG_m19__" }
+        { id: "newtab", name: "__MSG_m19__" },
       ],
       show: true,
-      value: "newwindow"
+      value: "newwindow",
     },
     {
       id: "showBadge",
@@ -414,7 +423,7 @@
       checkbox: true,
       type: "checkbox",
       show: true,
-      value: true
+      value: true,
     },
     {
       id: "hideVodcasts",
@@ -422,7 +431,7 @@
       checkbox: true,
       type: "checkbox",
       show: false,
-      value: false
+      value: false,
     },
     {
       id: "showDesktopNotification",
@@ -430,7 +439,7 @@
       checkbox: true,
       type: "checkbox",
       show: true,
-      value: true
+      value: true,
     },
     {
       id: "invertNotification",
@@ -438,7 +447,7 @@
       checkbox: true,
       type: "checkbox",
       show: true,
-      value: true
+      value: true,
     },
     {
       id: "notifyCount",
@@ -451,10 +460,10 @@
         { id: "2", name: "2" },
         { id: "3", name: "3" },
         { id: "4", name: "4" },
-        { id: "5", name: "5" }
+        { id: "5", name: "5" },
       ],
       show: true,
-      value: "0"
+      value: "0",
     },
     {
       id: "closeNotificationDelay",
@@ -464,7 +473,7 @@
       tip: "sec",
       min: 5,
       value: 8,
-      max: 60
+      max: 60,
     },
     {
       id: "playNotificationSound",
@@ -472,7 +481,7 @@
       checkbox: true,
       show: true,
       type: "checkbox",
-      value: false
+      value: false,
     },
     {
       id: "loopNotificationSound",
@@ -480,7 +489,7 @@
       checkbox: true,
       show: false,
       type: "checkbox",
-      value: false
+      value: false,
     },
     {
       id: "notificationSound",
@@ -492,9 +501,9 @@
         { id: "common/audio/ding.ogg", name: "ding" },
         { id: "common/audio/chime.mp3", name: "chime" },
         { id: "common/audio/click.wav", name: "click" },
-        { id: "customsound", name: "__MSG_m76__" }
+        { id: "customsound", name: "__MSG_m76__" },
       ],
-      value: "common/audio/ding.ogg"
+      value: "common/audio/ding.ogg",
     },
     {
       id: "notificationVolume",
@@ -505,7 +514,7 @@
       tip: "%",
       min: 1,
       max: 100,
-      value: 100
+      value: 100,
     },
     {
       id: "customNotificationSound",
@@ -513,7 +522,7 @@
       button: true,
       show: true,
       type: "button",
-      value: ""
+      value: "",
     },
     {
       id: "refreshInterval",
@@ -524,7 +533,7 @@
       tip: "min",
       min: 1,
       max: 60,
-      value: 5
+      value: 5,
     },
     {
       id: "livestreamerQuality",
@@ -536,10 +545,10 @@
         { id: "high", name: "high" },
         { id: "low", name: "low" },
         { id: "medium", name: "medium" },
-        { id: "mobile", name: "mobile" }
+        { id: "mobile", name: "mobile" },
       ],
       show: true,
-      value: "source"
+      value: "source",
     },
     {
       id: "livestreamerPath",
@@ -547,12 +556,12 @@
       type: "text",
       text: true,
       show: true,
-      value: ""
-    }
+      value: "",
+    },
   ];
 
   var User = Backbone.Model.extend({
-    userpic: utils.runtime.getURL("common/icons/default_userpic.png"),
+    userpic: utils.runtime.getURL("common/icons/user_default.png"),
     initialize: function () {
       var self = this;
       if (twitchOauth.hasAccessToken()) {
@@ -560,15 +569,14 @@
         self.populateUserInfo(function (e, res) {
           self.set("authenticated", true);
           self.set({
-            "logo": res.logo,
-            "name": res.display_name
+            logo: res.logo,
+            name: res.display_name,
           });
         });
       }
 
       twitchApi.on("authorize", function () {
-        self.populateUserInfo(function () {
-        });
+        self.populateUserInfo(function () {});
         self.set("authenticated", true);
       });
 
@@ -577,15 +585,14 @@
       });
     },
     populateUserInfo: function (cb) {
-
       var self = this;
 
       twitchApi.send("user", {}, function (err, res) {
         if (!err && res.data[0]) {
           self.set({
             logo: res.data[0].profile_image_url || self.userpic,
-            name: res.data[0].display_name
-          })
+            name: res.data[0].display_name,
+          });
         }
         cb(err, res);
       });
@@ -595,11 +602,10 @@
     },
     logout: function () {
       twitchApi.revoke();
-    }
+    },
   });
 
   var Control = Backbone.Model.extend({
-
     initialize: function () {
       this.setShow();
     },
@@ -607,9 +613,11 @@
     setShow: function () {
       var hideControls = {
         chrome: [],
-        firefox: [/*"showBadge"*/],
-        opera: []
-      }
+        firefox: [
+          /*"showBadge"*/
+        ],
+        opera: [],
+      };
 
       var rbrowser = utils.rbrowser;
       var hideIds = hideControls[rbrowser];
@@ -627,8 +635,7 @@
           return true;
         }
         return false;
-      }
-      else if (type == "radio" || type == "select") {
+      } else if (type == "radio" || type == "select") {
         var opts = this.get("opts");
         for (var i = 0; i < opts.length; i++) {
           if (opts[i].id === v) {
@@ -636,24 +643,21 @@
           }
         }
         return false;
-      }
-      else if (type == "range") {
-        var min = this.get("min")
-          , max = this.get("max")
-          ;
+      } else if (type == "range") {
+        var min = this.get("min"),
+          max = this.get("max");
         v = parseInt(v, 10);
 
         if (!isNaN(v) && v >= min && v <= max) {
           return true;
         }
         return false;
-      }
-      else if (type == 'mcheckbox') {
-        return typeof v === 'string';
+      } else if (type == "mcheckbox") {
+        return typeof v === "string";
       }
 
       return false;
-    }
+    },
   });
 
   var Settings = Backbone.Collection.extend({
@@ -669,10 +673,14 @@
           return storedControl.id === control.get("id");
         });
 
-        if (saved && saved.hasOwnProperty("value") && control.isValidValue(saved.value)) {
+        if (
+          saved &&
+          saved.hasOwnProperty("value") &&
+          control.isValidValue(saved.value)
+        ) {
           control.set("value", saved.value);
         }
-      })
+      });
 
       this.saveToStorage();
       this.on("change", this.saveToStorage);
@@ -685,7 +693,7 @@
 
     saveToStorage: function () {
       bgApp.set("settings", this.toJSON());
-    }
+    },
   });
 
   var TrackLastErrorMixin = {
@@ -694,22 +702,24 @@
       //clear last message if update was successfull
       this.on("update", function () {
         this.lastErrorMessage = "";
-      })
-      this.on("error", function (err) {
-        console.log("\nNew error = ", err);
-        this.lastErrorMessage = err;
-        this.trigger("_error", this.lastErrorMessage);
-      }.bind(this))
-    }
-  }
+      });
+      this.on(
+        "error",
+        function (err) {
+          console.log("\nNew error = ", err);
+          this.lastErrorMessage = err;
+          this.trigger("_error", this.lastErrorMessage);
+        }.bind(this)
+      );
+    },
+  };
 
   var TwitchItemModel = Backbone.Model.extend({
-
     idAttribute: "_id",
 
     baseUrl: function () {
       return "http://www.twitch.tv";
-    }
+    },
   });
 
   var UpdatableCollection = Backbone.Collection.extend({
@@ -718,27 +728,32 @@
     timeout: 60 * 1000,
     pageQuery: {
       offset: 0,
-      limit: 20
+      limit: 20,
     },
     defaultQuery: function () {
       return {
         first: 100,
-        offset: 0
-      }
+        offset: 0,
+      };
     },
     updating: false,
     interval: null,
     initialize: function () {
-      bgApp.dispatcher.on('popup-close', function () {
-        this.rewind();
-      }.bind(this))
+      bgApp.dispatcher.on(
+        "popup-close",
+        function () {
+          this.rewind();
+        }.bind(this)
+      );
     },
     rewind: function () {
       if (this.pagination) {
         this.pageQuery.offset = 0;
-        this.reset(this.slice(0, this.defaultQuery().limit).map(function (v) {
-          return v.attributes;
-        }));
+        this.reset(
+          this.slice(0, this.defaultQuery().limit).map(function (v) {
+            return v.attributes;
+          })
+        );
       }
     },
     send: function () {
@@ -747,16 +762,14 @@
     parse: function () {
       throw new Error("Not Implemented");
     },
-    beforeUpdate: function () {
-    },
-    afterUpdate: function () {
-    },
+    beforeUpdate: function () {},
+    afterUpdate: function () {},
     loadNext: function () {
       if (this.pagination && !this.updating) {
         this.pageQuery.offset = this.length + 1;
         this.update(this.pageQuery, { add: true }, function () {
           console.log("loadNext() complete");
-        })
+        });
       }
     },
     update: function (query, opts, callback) {
@@ -774,58 +787,66 @@
       this.updating = true;
       this.trigger("update-status", this.updating, { reset: opts.reset });
       this.beforeUpdate();
-      this.send(query, function (err, res) {
-        console.log("Been sent : ");
-        console.log(res);
-        this.updating = false;
-        this.trigger("update-status", this.updating, { reset: opts.reset });
+      this.send(
+        query,
+        function (err, res) {
+          console.log("Been sent : ");
+          console.log(res);
+          this.updating = false;
+          this.trigger("update-status", this.updating, { reset: opts.reset });
 
-        if (this.auto) {
-          this.interval = setTimeout(function () {
-            this.update(this.defaultQuery(), { reset: true }, $.noop);
-          }.bind(this), this.timeout);
-        }
-
-        if (err) {
-          if (err.status == 401) {
-            this.trigger("error", "auth");
-          } else {
-            this.trigger("error", "api");
+          if (this.auto) {
+            this.interval = setTimeout(
+              function () {
+                this.update(this.defaultQuery(), { reset: true }, $.noop);
+              }.bind(this),
+              this.timeout
+            );
           }
-          this.afterUpdate();
-          return callback(err);
-        }
 
-        this.parse(res, function (err, result) {
           if (err) {
-            this.trigger("error", err.message);
+            if (err.status == 401) {
+              this.trigger("error", "auth");
+            } else {
+              this.trigger("error", "api");
+            }
+            this.afterUpdate();
             return callback(err);
           }
-          if (opts.reset) {
-            this.reset(result, { silent: true });
-            this.afterUpdate();
-            this.trigger("update");
-          }
 
-          if (opts.add) {
-            var idsBefore = _.pluck(this.models, "id");
-            this.add(result, { silent: true });
-            var idsAfter = _.pluck(this.models, "id");
-            var addedModels = _
-              .difference(idsAfter, idsBefore)
-              .map(function (id) {
-                return this.get(id);
-              }.bind(this));
+          this.parse(
+            res,
+            function (err, result) {
+              if (err) {
+                this.trigger("error", err.message);
+                return callback(err);
+              }
+              if (opts.reset) {
+                this.reset(result, { silent: true });
+                this.afterUpdate();
+                this.trigger("update");
+              }
 
-            this.afterUpdate();
-            this.trigger("addarray", addedModels);
-          }
-          return callback(null);
-        }.bind(this));
+              if (opts.add) {
+                var idsBefore = _.pluck(this.models, "id");
+                this.add(result, { silent: true });
+                var idsAfter = _.pluck(this.models, "id");
+                var addedModels = _.difference(idsAfter, idsBefore).map(
+                  function (id) {
+                    return this.get(id);
+                  }.bind(this)
+                );
 
-      }.bind(this));
-    }
-  })
+                this.afterUpdate();
+                this.trigger("addarray", addedModels);
+              }
+              return callback(null);
+            }.bind(this)
+          );
+        }.bind(this)
+      );
+    },
+  });
 
   var Video = TwitchItemModel.extend();
 
@@ -848,7 +869,7 @@
       }
       res.videos = res.videos || [];
       return callback(null, res.videos);
-    }
+    },
   });
 
   var ChannelVideos = Videos.extend({
@@ -857,10 +878,10 @@
     defaultQuery: function () {
       return {
         channel: this.channel,
-        limit: 20
-      }
-    }
-  })
+        limit: 20,
+      };
+    },
+  });
 
   var GameVideos = Videos.extend({
     url: "gameVideos",
@@ -868,10 +889,10 @@
     defaultQuery: function () {
       return {
         game: this.gameid,
-        period: "week"
-      }
-    }
-  })
+        period: "week",
+      };
+    },
+  });
 
   var Game = Backbone.Model.extend({
     idAttribute: "_id",
@@ -879,24 +900,32 @@
     follow: function (cb) {
       cb = cb || $.noop;
       var target = this.get("game").name;
-      twitchApi.send("gameFollow", { name: target }, function (err, res) {
-        if (err) return cb(err);
-        this.trigger("follow", this.attributes);
-        bgApp.dispatcher.trigger("game:follow", this.attributes);
-        cb();
-      }.bind(this));
+      twitchApi.send(
+        "gameFollow",
+        { name: target },
+        function (err, res) {
+          if (err) return cb(err);
+          this.trigger("follow", this.attributes);
+          bgApp.dispatcher.trigger("game:follow", this.attributes);
+          cb();
+        }.bind(this)
+      );
     },
 
     unfollow: function (cb) {
       cb = cb || $.noop;
       var target = this.get("game").name;
-      twitchApi.send("gameUnfollow", { name: target }, function (err, res) {
-        if (err) return cb(err);
-        this.trigger("unfollow", this);
-        bgApp.dispatcher.trigger("game:unfollow", this.attributes);
-        cb();
-      }.bind(this));
-    }
+      twitchApi.send(
+        "gameUnfollow",
+        { name: target },
+        function (err, res) {
+          if (err) return cb(err);
+          this.trigger("unfollow", this);
+          bgApp.dispatcher.trigger("game:unfollow", this.attributes);
+          cb();
+        }.bind(this)
+      );
+    },
   });
 
   var Games = UpdatableCollection.extend({
@@ -908,7 +937,7 @@
     findByName: function (gameName) {
       return this.find(function (g) {
         return g.get("name") == gameName;
-      })
+      });
     },
     parse: function (res, callback) {
       if (!res) {
@@ -916,14 +945,14 @@
       }
       res.data = Array.isArray(res.data) ? res.data : [];
       res.data.forEach(function (g) {
-        g.box_art_url = g.box_art_url.replace(/{width}/, 136)
-        g.box_art_url = g.box_art_url.replace(/{height}/, 190)
+        g.box_art_url = g.box_art_url.replace(/{width}/, 136);
+        g.box_art_url = g.box_art_url.replace(/{height}/, 190);
       });
       return callback(null, res.data);
     },
     send: function (query, callback) {
       twitchApi.send("gamesTop", query, callback);
-    }
+    },
   });
 
   var FollowingGames = Games.extend({
@@ -938,15 +967,15 @@
 
       bgApp.dispatcher.on("game:follow", function (model) {
         self.add(model);
-      })
+      });
 
       bgApp.dispatcher.on("game:unfollow", function (model) {
         self.remove(model._id);
-      })
+      });
 
       twitchApi.on("authorize", function () {
         self.update();
-      })
+      });
 
       twitchApi.on("revoke", function () {
         self.reset();
@@ -968,16 +997,16 @@
         g._id = g.game._id;
       });
       return callback(null, res.follows);
-    }
-  })
+    },
+  });
 
   var ChannelNotification = Backbone.Model.extend({
     idAttribute: "_id",
     defaults: {
       notificationOpts: {
         desktop: true,
-        sound: true
-      }
+        sound: true,
+      },
     },
     getProfileUrl: function () {
       return "https://www.twitch.tv/" + this.get("to_login") + "/about";
@@ -989,22 +1018,25 @@
       let i = settings.get("invertNotification").get("value");
       this.defaults.notificationOpts.desktop = i;
       this.defaults.notificationOpts.sound = i;
-    }
+    },
   });
 
   var FollowedChannel = TwitchItemModel.extend({
     openChannelPage: function () {
-      utils.tabs.create({ url: "https://twitch.tv/" + this.get("to_login") })
-    }
-  })
+      utils.tabs.create({ url: "https://twitch.tv/" + this.get("to_login") });
+    },
+  });
 
   var FollowedChannels = Backbone.Collection.extend({
     model: FollowedChannel,
     updating: false,
     initialize: function () {
-      twitchApi.on("revoke", function () {
-        this.reset();
-      }.bind(this));
+      twitchApi.on(
+        "revoke",
+        function () {
+          this.reset();
+        }.bind(this)
+      );
     },
     comparator: function (a) {
       return a.get("to_login");
@@ -1015,10 +1047,10 @@
           return cb(err || new Error("No Total channels"));
         }
         return cb(null, parseInt(res.total));
-      })
+      });
     },
     getFollowedChannels: function (page, cb) {
-      let cursor = (page ? {first: 100, after: page} : {first: 100});
+      let cursor = page ? { first: 100, after: page } : { first: 100 };
       twitchApi.send("follows", cursor, function (err, res) {
         if (err || !res || !res.data) {
           return cb(err || new Error("No Total channels"));
@@ -1026,10 +1058,11 @@
 
         res.data.forEach(function (c) {
           c._id = c.to_id;
-          c.logo = "http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_50x50.png";
+          c.logo =
+            "http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_50x50.png";
         });
         return cb(null, res.data, res.pagination.cursor);
-      })
+      });
     },
     update: function () {
       var self = this;
@@ -1042,32 +1075,32 @@
           self.updating = false;
           return self.trigger("error", "api");
         }
-        
+
         var limit = 4;
         let fns = [];
         var requestCount = Math.ceil(count / 100);
 
-        let ct = 0
+        let ct = 0;
 
-        function getFC (c) {
+        function getFC(c) {
           self.getFollowedChannels(c, function (err, cb, cur) {
             if (requestCount > ct) {
-              fns = fns.concat(cb)
-              ct++
-              getFC(cur)
+              fns = fns.concat(cb);
+              ct++;
+              getFC(cur);
             } else {
               self.updating = false;
               fns = _.flatten(fns);
               self.reset(fns, { silent: true });
               self.trigger("update");
             }
-          })
+          });
         }
 
-        getFC()
+        getFC();
       });
-    }
-  })
+    },
+  });
 
   var NotificationSettings = Backbone.Collection.extend({
     model: ChannelNotification,
@@ -1082,7 +1115,7 @@
 
       twitchApi.on("revoke", function () {
         self.reset();
-      })
+      });
     },
     loadFromStorage: function () {
       if (twitchApi.isAuthorized()) {
@@ -1106,9 +1139,9 @@
       if (twitchApi.isAuthorized()) {
         var val = this.map(function (v) {
           return {
-            "_id": v.get("_id"),
-            "notificationOpts": v.get("notificationOpts")
-          }
+            _id: v.get("_id"),
+            notificationOpts: v.get("notificationOpts"),
+          };
         });
         bgApp.set("notifications_" + twitchApi.userName, val);
       } else {
@@ -1125,7 +1158,7 @@
             return cb(err || new Error("No Total channels"));
           }
           return cb(null, parseInt(res.total));
-        })
+        });
       }
 
       function getFollowedChannels(count, cb) {
@@ -1138,13 +1171,13 @@
             c._id = c.to_id;
             c.channel = {
               display_name: c.to_name,
-              logo: "http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_50x50.png"
-            }
+              logo: "http://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_50x50.png",
+            };
           });
           channels = channels.concat(res.data);
 
           return cb(null);
-        })
+        });
       }
 
       getFollowedChannelsCount(function (err, count) {
@@ -1162,61 +1195,80 @@
           } else {
             self.reset(channels, { silent: true });
             //merge with stored notification preferences
-            self.set(self.loadFromStorage(), { add: false, remove: false, merge: true, silent: true });
+            self.set(self.loadFromStorage(), {
+              add: false,
+              remove: false,
+              merge: true,
+              silent: true,
+            });
             self.trigger("update");
           }
-        })
+        });
       });
-    }
-  })
+    },
+  });
 
   var Stream = TwitchItemModel.extend({
-
     defaults: {
-      created_at: Date.now()
+      created_at: Date.now(),
     },
 
     initialize: function () {
       var channelName = this.get("user_name");
       var streamType = this.get("type");
-      var isVodcast = ['rerun', 'watch_party'].includes(streamType);
-      this.set({
-        vodcast: isVodcast,
-        name: channelName
-      },
-        { silent: true });
+      var isVodcast = ["rerun", "watch_party"].includes(streamType);
+      this.set(
+        {
+          vodcast: isVodcast,
+          name: channelName,
+        },
+        { silent: true }
+      );
     },
 
     follow: function (cb) {
       cb = cb || $.noop;
       var target = this.get("channel")._id;
-      twitchApi.send("follow", { target: target }, function (err, res) {
-        if (err) return cb(err);
-        this.trigger("follow", this.attributes);
-        bgApp.dispatcher.trigger("stream:follow", this.attributes);
-        cb();
-      }.bind(this));
+      twitchApi.send(
+        "follow",
+        { target: target },
+        function (err, res) {
+          if (err) return cb(err);
+          this.trigger("follow", this.attributes);
+          bgApp.dispatcher.trigger("stream:follow", this.attributes);
+          cb();
+        }.bind(this)
+      );
     },
 
     unfollow: function (cb) {
       cb = cb || $.noop;
       var target = this.get("channel")._id;
-      twitchApi.send("unfollow", { target: target }, function (err, res) {
-        if (err) return cb(err);
-        this.trigger("unfollow", this);
-        cb();
-      }.bind(this));
+      twitchApi.send(
+        "unfollow",
+        { target: target },
+        function (err, res) {
+          if (err) return cb(err);
+          this.trigger("unfollow", this);
+          cb();
+        }.bind(this)
+      );
     },
 
     getStreamURL: function (type) {
       type = type || settings.get("openStreamIn").get("value");
       if (type == "html5") {
-        return "http://player.twitch.tv/?channel=" + this.get("user_login") + "&html5" + "&parent=twitch-companion";
+        return (
+          "http://player.twitch.tv/?channel=" +
+          this.get("user_login") +
+          "&html5" +
+          "&parent=twitch-companion"
+        );
       }
       var links = {
         theatrelayout: "/ID?mode=theatre",
         newlayout: "/ID",
-        popout: "/ID/popout"
+        popout: "/ID/popout",
       };
 
       return this.baseUrl() + links[type].replace(/ID/, this.get("user_login"));
@@ -1229,7 +1281,7 @@
       utils.tabs.query({}, function (tabs) {
         tabs = tabs.filter(function (t) {
           return /https*:\/\/(www\.)*multitwitch\.tv/.test(t.url);
-        })
+        });
 
         //update last tab with multitwitch
         if (tabs.length) {
@@ -1252,14 +1304,17 @@
         utils.runtime.sendMessage("LIVESTREAMER", {
           url: url,
           quality: quality,
-          path: path
+          path: path,
         });
       }
     },
 
     openStream: function (type) {
       if (type == "livestreamer") {
-        this.openInLivestreamer(settings.get("livestreamerQuality").get("value"), settings.get("livestreamerPath").get("value"));
+        this.openInLivestreamer(
+          settings.get("livestreamerQuality").get("value"),
+          settings.get("livestreamerPath").get("value")
+        );
       } else {
         var url = this.getStreamURL(type);
         utils.tabs.create({ url: url });
@@ -1268,42 +1323,43 @@
 
     openChat: function () {
       var openIn = settings.get("openChatIn").get("value");
-      var href = this.baseUrl() + "/popout/ID/chat?popout=".replace(/ID/, this.get("user_login"));
+      var href =
+        this.baseUrl() +
+        "/popout/ID/chat?popout=".replace(/ID/, this.get("user_login"));
 
       if (openIn == "newwindow") {
         utils.windows.create({ url: href, width: 400 });
       } else {
         utils.tabs.create({ url: href });
       }
-    }
+    },
   });
 
   var FollowingStream = Stream.extend({
     defaults: {
-      favorite: true
-    }
-  })
+      favorite: true,
+    },
+  });
 
   var StreamCollection = UpdatableCollection.extend({
-
     model: Stream,
 
     twitchApi: twitchApi,
 
     defaultQuery: function () {
       let language = settings.get("streamLanguage2").get("value");
-      language = language == 'any' ? '' : language;
+      language = language == "any" ? "" : language;
       if (language) {
         return {
           language: language,
           first: 50,
-          offset: 0
-        }
+          offset: 0,
+        };
       } else {
         return {
           first: 50,
-          offset: 0
-        }
+          offset: 0,
+        };
       }
     },
 
@@ -1311,15 +1367,21 @@
       UpdatableCollection.prototype.initialize.apply(this, arguments);
       this.setComparator();
 
-      settings.get("viewSort").on("change:value", function () {
-        this.setComparator();
-      }.bind(this));
+      settings.get("viewSort").on(
+        "change:value",
+        function () {
+          this.setComparator();
+        }.bind(this)
+      );
 
-      settings.get("streamLanguage2").on("change:value", function () {
-        if (this.length) {
-          this.update();
-        }
-      }.bind(this))
+      settings.get("streamLanguage2").on(
+        "change:value",
+        function () {
+          if (this.length) {
+            this.update();
+          }
+        }.bind(this)
+      );
     },
 
     setComparator: function () {
@@ -1328,8 +1390,11 @@
       var reverse = parseInt(curSort[1], 10);
 
       this.comparator = function (a, b) {
-        return a.get(prop) > b.get(prop) ? 1 * reverse
-          : a.get(prop) < b.get(prop) ? -1 * reverse : 0;
+        return a.get(prop) > b.get(prop)
+          ? 1 * reverse
+          : a.get(prop) < b.get(prop)
+          ? -1 * reverse
+          : 0;
       };
       this.sort();
     },
@@ -1341,14 +1406,14 @@
       res.data = Array.isArray(res.data) ? res.data : [];
       if (settings.get("hideVodcasts").get("value")) {
         res.data = res.data.filter(function (v) {
-          if (['rerun', 'watch_party'].includes(v.type)) {
+          if (["rerun", "watch_party"].includes(v.type)) {
             return false;
           }
           return true;
-        })
+        });
       }
       return callback(null, res.data);
-    }
+    },
   });
 
   var Hosts = StreamCollection.extend({
@@ -1361,7 +1426,7 @@
 
       twitchApi.on("authorize", function () {
         self.update();
-      })
+      });
 
       twitchApi.on("revoke", function () {
         self.reset();
@@ -1374,22 +1439,18 @@
         return callback(new Error("api"));
       }
       var streams = res.hosts.map(function (host) {
-        return Object.assign(
-          {},
-          host.target,
-          {
-            host: _.pick(host, 'display_name', 'id', 'name')
-          }
-        );
-      })
+        return Object.assign({}, host.target, {
+          host: _.pick(host, "display_name", "id", "name"),
+        });
+      });
 
       callback(null, streams);
     },
     send: function (query, callback) {
       console.log("hosts", arguments);
       twitchApi.send("hosts", {}, callback);
-    }
-  })
+    },
+  });
 
   var FollowingStreams = StreamCollection.extend({
     pagination: false,
@@ -1400,8 +1461,8 @@
     defaultQuery: function () {
       return {
         limit: 100,
-        offset: 0
-      }
+        offset: 0,
+      };
     },
 
     initialize: function () {
@@ -1417,7 +1478,7 @@
 
       bgApp.dispatcher.on("stream:follow", function (model) {
         self.add(model);
-      })
+      });
 
       this.on("unfollow", function (attr) {
         self.remove(attr);
@@ -1434,11 +1495,11 @@
       this.on("add", function (stream) {
         self.addedStreams = [stream.id];
         self.notify();
-      })
+      });
 
       twitchApi.on("userid", function () {
         self.update();
-      })
+      });
 
       twitchApi.on("revoke", function () {
         self.reset();
@@ -1463,29 +1524,40 @@
 
       twitchApi.getUserName(function () {
         //notify about all streams if error happens
-        var desktopNotifications = self.getNewStreams()
+        var desktopNotifications = self
+          .getNewStreams()
           .filter(function (stream) {
-            return notifications.getChannelNotification(stream.get("user_id"), "desktop")
-          })
+            return notifications.getChannelNotification(
+              stream.get("user_id"),
+              "desktop"
+            );
+          });
 
-        var soundNotifications = self.getNewStreams()
-          .filter(function (stream) {
-            return notifications.getChannelNotification(stream.get("user_id"), "sound")
-          })
+        var soundNotifications = self.getNewStreams().filter(function (stream) {
+          return notifications.getChannelNotification(
+            stream.get("user_id"),
+            "sound"
+          );
+        });
 
-        if (desktopNotifications.length && settings.get("showDesktopNotification").get("value")) {
+        if (
+          desktopNotifications.length &&
+          settings.get("showDesktopNotification").get("value")
+        ) {
           bgApp.sendNotification(desktopNotifications);
         }
 
-        if (soundNotifications.length && settings.get("playNotificationSound").get("value")) {
+        if (
+          soundNotifications.length &&
+          settings.get("playNotificationSound").get("value")
+        ) {
           bgApp.playSound(
             settings.getNotificationSoundSource(),
             settings.get("notificationVolume").get("value") / 100,
             settings.get("loopNotificationSound").get("value")
           );
         }
-      })
-
+      });
     },
     beforeUpdate: function () {
       this.idsBeforeUpdate = this.pluck("id").map(function (v) {
@@ -1498,29 +1570,41 @@
     afterUpdate: function () {
       this.idsAfterUpdate = this.pluck("id", function (v) {
         return v;
-      })
+      });
 
-      this.addedStreams = _.difference(this.idsAfterUpdate, this.idsBeforeUpdate, this.notified);
+      this.addedStreams = _.difference(
+        this.idsAfterUpdate,
+        this.idsBeforeUpdate,
+        this.notified
+      );
       this.notified = _.union(this.addedStreams, this.notified);
-    }
+    },
   });
 
   var GameLobby = Game.extend({
-
     lastChange: 0,
 
     change: function (gameName) {
-      var newGame = games.findByName(gameName) || followedgames.findByName(gameName);
+      var newGame =
+        games.findByName(gameName) || followedgames.findByName(gameName);
       if (newGame) {
         console.log("lastchange", this.lastChange, newGame);
-        if (!this.get("game") || newGame.get("game").name != this.get("game").name || (Date.now() - this.lastChange) > 5 * 1000 * 60) {
+        if (
+          !this.get("game") ||
+          newGame.get("game").name != this.get("game").name ||
+          Date.now() - this.lastChange > 5 * 1000 * 60
+        ) {
           this.set(newGame.toJSON());
           this.lastChange = Date.now();
-          bgApp.dispatcher.trigger("gameLobby:change", gameName, newGame.get("id"));
+          bgApp.dispatcher.trigger(
+            "gameLobby:change",
+            gameName,
+            newGame.get("id")
+          );
         }
       }
-    }
-  })
+    },
+  });
 
   var GameStreams = StreamCollection.extend({
     game: null,
@@ -1530,9 +1614,12 @@
     pagination: true,
     initialize: function () {
       StreamCollection.prototype.initialize.apply(this, arguments);
-      bgApp.dispatcher.on('popup-close', function () {
-        this.enableLanguageFilter();
-      }.bind(this))
+      bgApp.dispatcher.on(
+        "popup-close",
+        function () {
+          this.enableLanguageFilter();
+        }.bind(this)
+      );
     },
     disableLanguageFilter: function () {
       this.langFilter = false;
@@ -1546,29 +1633,35 @@
         delete query.broadcaster_language;
       }
       twitchApi.send("streams", query, callback);
-    }
+    },
   });
 
   var GameLobbyStreams = GameStreams.extend({
     initialize: function () {
-      bgApp.dispatcher.on("gameLobby:change", function (game, gameid) {
-        this.game = game;
-        this.gameid = gameid
-        this.update();
-      }.bind(this));
+      bgApp.dispatcher.on(
+        "gameLobby:change",
+        function (game, gameid) {
+          this.game = game;
+          this.gameid = gameid;
+          this.update();
+        }.bind(this)
+      );
       GameStreams.prototype.initialize.apply(this, arguments);
-    }
-  })
+    },
+  });
 
   var GameLobbyVideos = GameVideos.extend({
     initialize: function () {
-      bgApp.dispatcher.on("gameLobby:change", function (game) {
-        this.game = game;
-        this.update();
-      }.bind(this));
+      bgApp.dispatcher.on(
+        "gameLobby:change",
+        function (game) {
+          this.game = game;
+          this.update();
+        }.bind(this)
+      );
       GameVideos.prototype.initialize.apply(this, arguments);
-    }
-  })
+    },
+  });
 
   var TopStreams = StreamCollection.extend({
     auto: true,
@@ -1576,7 +1669,7 @@
     timeout: 5 * 60 * 1000,
     send: function (query, callback) {
       twitchApi.send("streams", query, callback);
-    }
+    },
   });
 
   var Search = StreamCollection.extend({
@@ -1585,7 +1678,7 @@
     send: function (query, callback) {
       query.query = this.query;
       twitchApi.send("searchStreams", query, callback);
-    }
+    },
   });
 
   var Contributor = Backbone.Model.extend();
@@ -1594,17 +1687,18 @@
     model: Contributor,
     initialize: function () {
       this.add(contributorList);
-    }
+    },
   });
 
   var Badge = Backbone.Model.extend({
     defaults: {
-      count: 0
+      count: 0,
     },
     initialize: function () {
       var self = this;
-      utils.browserAction.setBadgeBackgroundColor({ "color": [100, 100, 100, 255] });
-
+      utils.browserAction.setBadgeBackgroundColor({
+        color: [100, 100, 100, 255],
+      });
 
       self.on("change:count", function () {
         if (settings.get("showBadge").get("value")) {
@@ -1624,8 +1718,8 @@
       } else {
         bgApp.clearBadge();
       }
-    }
-  })
+    },
+  });
 
   bgApp.bindNotificationListeners();
 
@@ -1637,26 +1731,25 @@
   FollowingGames.mixin(TrackLastErrorMixin);
   Search.mixin(TrackLastErrorMixin);
 
-  var settings = root.settings = new Settings;
-  var badge = root.badge = new Badge;
-  var notifications = root.notifications = new NotificationSettings;
-  var contributors = root.contributors = new Contributors;
-  var following = root.following = new FollowingStreams;
-  var followedgames = root.followedgames = new FollowingGames;
-  var topstreams = root.topstreams = new TopStreams;
-  var videos = root.videos = new ChannelVideos;
-  var games = root.games = new Games;
-  var search = root.search = new Search;
-  var user = root.user = new User;
-  var gameLobby = root.gameLobby = new GameLobby;
-  var gameVideos = root.gameVideos = new GameLobbyVideos;
-  var gameStreams = root.gameStreams = new GameLobbyStreams;
-  var followedChannels = root.followedChannels = new FollowedChannels;
+  var settings = (root.settings = new Settings());
+  var badge = (root.badge = new Badge());
+  var notifications = (root.notifications = new NotificationSettings());
+  var contributors = (root.contributors = new Contributors());
+  var following = (root.following = new FollowingStreams());
+  var followedgames = (root.followedgames = new FollowingGames());
+  var topstreams = (root.topstreams = new TopStreams());
+  var videos = (root.videos = new ChannelVideos());
+  var games = (root.games = new Games());
+  var search = (root.search = new Search());
+  var user = (root.user = new User());
+  var gameLobby = (root.gameLobby = new GameLobby());
+  var gameVideos = (root.gameVideos = new GameLobbyVideos());
+  var gameStreams = (root.gameStreams = new GameLobbyStreams());
+  var followedChannels = (root.followedChannels = new FollowedChannels());
   // var hosts = root.hosts = new Hosts;
 
   topstreams.update();
   games.update();
 
   bgApp.init();
-
-}).call(this);
+}.call(this));

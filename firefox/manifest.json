@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "default_locale": "en",
   "manifest_version": 2,
-  "description": "Gain speed exploring Twitch through the power of this extension",
+  "description": "Gain time exploring Twitch through the power of this extension",
   "content_scripts": [
     {
       "run_at": "document_start",
@@ -38,15 +38,17 @@
   },
   "minimum_chrome_version": "1.1.142",
   "icons": {
-    "16": "common/icons/16_1.png",
-    "32": "common/icons/32_1.png",
-    "48": "common/icons/48_1.png",
-    "128": "common/icons/128_1.png"
+    "16": "common/icons/16.png",
+    "32": "common/icons/32.png",
+    "48": "common/icons/48.png",
+    "64": "common/icons/64.png",
+    "128": "common/icons/128.png"
   },
   "browser_action": {
     "default_icon": {
-      "19": "common/icons/19_2.png",
-      "38": "common/icons/38_2.png"
+      "16": "common/icons/16.png",
+      "32": "common/icons/32.png",
+      "48": "common/icons/48.png"
     },
     "default_popup": "common/html/popup.html"
   },
