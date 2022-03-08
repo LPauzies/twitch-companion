@@ -71,7 +71,7 @@
 
   bgApp.sendNotification = async function (streamList) {
     var displayCount = settings.get("notifyCount").get("value");
-    var defaultIcon = utils.runtime.getURL("common/icons/64_1.png");
+    var defaultIcon = utils.runtime.getURL("common/icons/64.png");
     var streamsToShow = streamList.slice(0, displayCount);
     var streamsOther = streamList.slice(displayCount, streamList.length);
     var streamTitles = streamsOther.map(function (c) {
