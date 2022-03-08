@@ -113,5 +113,6 @@
     "m112": { "message" : "Livestreamer filsti"},
     "m113": { "message" : "Antal kanaler pr. notifikation"},
     "m114": { "message" : "Andre kanaler: "},
-    "m115": { "message" : "Vis som udgangspunkt notifikationer for nye følgere"}
+    "m115": { "message" : "Vis som udgangspunkt notifikationer for nye følgere"},
+    "m116": { "message" : "Support me" }
 }

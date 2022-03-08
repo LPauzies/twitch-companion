@@ -113,5 +113,6 @@
     "m112": { "message" : "Livestreamer path"},
     "m113": { "message" : "Number of split notifications"},
     "m114": { "message" : "Other channels: "},
-    "m115": { "message" : "Show notifications by default for new follows"}
+    "m115": { "message" : "Show notifications by default for new follows"},
+    "m116": { "message" : "Support me" }
 }

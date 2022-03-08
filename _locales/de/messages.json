@@ -113,5 +113,6 @@
 	"m112": { "message" : "Livestreamer pfad"},
 	"m113": { "message" : "Anzahl der geteilten Benachrichtigungen"},
 	"m114": { "message" : "Andere Kanäle"},
-	"m115": { "message" : "Zeige standardmäßig Benachrichtigungen für neue Follows"}
+	"m115": { "message" : "Zeige standardmäßig Benachrichtigungen für neue Follows"},
+    "m116": { "message" : "Support me" }
 }
