@@ -1,5 +1,5 @@
 <p align="center">
-    <span style="font-size: 24pt">Twitch Companion</span>
+    <font size="+3">Twitch Companion</font>
     <br><br>
     <img src="common/icons/64.png" />
 </p>
