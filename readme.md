@@ -48,4 +48,4 @@ This guide will help you to get prepared for translation. Let's start!
 
 ## Fork
 
-This app is a fork from <https://github.com/Ndragomirov/twitch-now>, thanks for the work he has done.
+This app is a fork from <https://github.com/Ndragomirov/twitch-now>, thanks for the work he has done and all the contributors !
