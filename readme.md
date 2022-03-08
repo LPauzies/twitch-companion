@@ -1,5 +1,9 @@
 # Twitch Companion
 
+A way to easily interact with Twitch platform !
+
+[![CodeQL](https://github.com/LPauzies/twitch-companion/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/LPauzies/twitch-companion/actions/workflows/codeql.yml)
+
 ## Requirements
 
 * [Node v16.14+](https://nodejs.org/en/)
