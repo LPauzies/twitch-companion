@@ -2,7 +2,7 @@
   "name": "Twitch Companion",
   "version": "2.0.0",
   "default_locale": "en",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "description": "Gain time exploring Twitch through the power of this extension",
   "content_scripts": [
     {
@@ -44,7 +44,7 @@
     "64": "common/icons/64.png",
     "128": "common/icons/128.png"
   },
-  "browser_action": {
+  "action": {
     "default_icon": {
       "16": "common/icons/16.png",
       "32": "common/icons/32.png",
@@ -55,9 +55,11 @@
   "permissions": [
     "storage",
     "background",
-    "*://*.twitch.tv/*",
-    "*://ndragomirov.github.io/*",
     "notifications",
     "tabs"
+  ],
+  "host_permissions": [
+    "*://*.twitch.tv/*",
+    "*://ndragomirov.github.io/*"
   ]
 }
