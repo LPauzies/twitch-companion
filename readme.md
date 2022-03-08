@@ -1,6 +1,6 @@
 <p align="center">
-    <span style="font-size: 2em">Twitch Companion</span>
-    <br>
+    <span style="font-size: 24pt">Twitch Companion</span>
+    <br><br>
     <img src="common/icons/64.png" />
 </p>
 
