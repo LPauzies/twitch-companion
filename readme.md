@@ -1,8 +1,13 @@
-# Twitch Companion
+<p align="center">
+    <span style="font-size: 2em">Twitch Companion</span>
+    <br>
+    <img src="common/icons/64.png" />
+</p>
+
 
 A way to easily interact with Twitch platform !
 
-[![CodeQL](https://github.com/LPauzies/twitch-companion/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/LPauzies/twitch-companion/actions/workflows/codeql.yml)
+[![CodeQL](https://github.com/LPauzies/twitch-companion/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/LPauzies/twitch-companion/actions/workflows/codeql.yml) &nbsp; [![Tag automation](https://github.com/LPauzies/twitch-companion/actions/workflows/tags.yml/badge.svg?branch=master)](https://github.com/LPauzies/twitch-companion/actions/workflows/tags.yml)
 
 ## Requirements
 
@@ -46,6 +51,18 @@ This guide will help you to get prepared for translation. Let's start!
 4.  When you're done, you can now commit and push your changes. The new files will appear on you Github account.
 5.  You're almost done. The only thing left is to create a pull request so I can see that you want to apply your changes. To do it, press the "Pull request" button. Make sure, the target repository is correct and press "Send pull request"
 
+## Application views
+
+<p align="center">
+    <img width="180" src="screenshots/1.JPG" />
+    &nbsp;
+    <img width="180" src="screenshots/2.JPG" />
+    &nbsp;
+    <img width="180" src="screenshots/3.JPG" />
+    &nbsp;
+    <img width="180" src="screenshots/4.JPG" />
+</p>
+
 ## Fork
 
-This app is a fork from <https://github.com/Ndragomirov/twitch-now>, thanks for the work he has done and all the contributors !
+This app is a fork from <https://github.com/Ndragomirov/twitch-now>, thanks for the work he has done and all the contributors.
