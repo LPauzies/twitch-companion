@@ -2,7 +2,8 @@
 
 ## Requirements
 
-* Node v16+
+* [Node v16.14+](https://nodejs.org/en/)
+* [Gulp](https://gulpjs.com/docs/en/getting-started/quick-start/)
 
 ## How to build
 
@@ -19,6 +20,16 @@ $ npm run build:all
 To build a version case of browser firefox, chrome or opera :
 ```
 $ npm run build:<browser>
+```
+
+To package every versions of the extension :
+```
+$ npm run package:all
+```
+
+To package a version case of browser firefox, chrome or opera :
+```
+$ npm run package:<browser>
 ```
 
 ## Translation guide
