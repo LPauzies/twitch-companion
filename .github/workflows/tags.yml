@@ -1,4 +1,4 @@
-name: "Generate tag for Twitch Companion"
+name: "Tag automation"
 
 on:
   push:
