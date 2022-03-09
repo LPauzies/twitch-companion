@@ -11,7 +11,7 @@
 Twitch companion allows you to quickly access your favorite streamers. Search streamers by games and access it directly from the extension. Twitch companion allow you to get in touch of which one of your followed streamers is going live by using popup messages (can be disabled through parameters)
 
 The application is fully customizable through parameters tab.
-The application supports multiple languages such ENG, FR, ES and more.
+The application supports multiple languages such EN, FR, ES and more.
 
 Source code available here : https://github.com/LPauzies/twitch-companion
 
@@ -25,6 +25,12 @@ Source code available here : https://github.com/LPauzies/twitch-companion
 Before all, you need to install dependencies:
 ```
 $ npm install
+```
+
+After you need to have a secret for the twitch application, go to your developer console and get a secret.  
+Push it to `.env` file at root.
+```
+$ echo "TWITCH_SECRET=my-twitch-secret" > .env
 ```
 
 To build every versions of the extension :

@@ -1,49 +1,53 @@
 {
-  "name": "twitch-companion",
-  "version": "2.1.0",
-  "description": "A way to easily interact with Twitch platform !",
-  "dependencies": {
-    "semver": "^7.3.2",
-    "through2": "^2.0.5",
-    "web-ext": "^6.7.0"
-  },
-  "devDependencies": {
-    "del": "^2.1.0",
-    "gulp": "^4.0.2",
-    "gulp-bump": "^1.0.0",
-    "gulp-concat": "^2.6.0",
-    "gulp-declare": "^0.3.0",
-    "gulp-handlebars": "^5.0.2",
-    "gulp-jshint": "^2.1.0",
-    "gulp-shell": "^0.5.1",
-    "gulp-strip-debug": "^3.0.0",
-    "gulp-util": "^3.0.7",
-    "gulp-wrap": "^0.15.0",
-    "gulp-zip": "^3.0.2",
-    "jshint": "^2.10.3",
-    "merge-stream": "^1.0.0",
-    "request": "^2.88.0",
-    "run-sequence": "^1.1.4"
-  },
-  "scripts": {
-    "build:all": "gulp firefox && gulp chrome && gulp opera",
-    "build:firefox": "gulp firefox",
-    "build:chrome": "gulp chrome",
-    "build:opera": "gulp opera",
-    "package:all": "npm run package:firefox && npm run package:chrome && npm run package:opera ",
-    "package:firefox": "npm run build:firefox && gulp compress:firefox",
-    "package:chrome": "npm run build:chrome && gulp compress:chrome",
-    "package:opera": "npm run build:opera && gulp compress:opera",
-    "dev:firefox": "web-ext run --source-dir ./build/firefox"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/LPauzies/twitch-companion"
-  },
-  "author": "lucas.pauzies@hotmail.fr",
-  "license": "GPL3",
-  "bugs": {
-    "url": "https://github.com/LPauzies/twitch-companion/issues"
-  },
-  "homepage": "https://github.com/LPauzies/twitch-companion"
+    "name": "twitch-companion",
+    "version": "2.5.0",
+    "description": "A way to easily interact with Twitch platform !",
+    "dependencies": {
+        "semver": "^7.3.2",
+        "through2": "^2.0.5",
+        "web-ext": "^6.7.0"
+    },
+    "devDependencies": {
+        "del": "^2.1.0",
+        "gulp": "^4.0.2",
+        "gulp-bump": "^1.0.0",
+        "gulp-concat": "^2.6.0",
+        "gulp-declare": "^0.3.0",
+        "gulp-handlebars": "^5.0.2",
+        "gulp-jshint": "^2.1.0",
+        "gulp-shell": "^0.5.1",
+        "gulp-strip-debug": "^3.0.0",
+        "gulp-util": "^3.0.7",
+        "gulp-wrap": "^0.15.0",
+        "gulp-zip": "^3.0.2",
+        "jshint": "^2.10.3",
+        "merge-stream": "^1.0.0",
+        "request": "^2.88.0",
+        "run-sequence": "^1.1.4"
+    },
+    "scripts": {
+        "build:all": "gulp firefox && gulp chrome && gulp opera",
+        "build:firefox": "gulp firefox",
+        "build:chrome": "gulp chrome",
+        "build:opera": "gulp opera",
+        "package:all": "npm run package:firefox && npm run package:chrome && npm run package:opera",
+        "package:firefox": "npm run build:firefox && gulp compress:firefox",
+        "package:chrome": "npm run build:chrome && gulp compress:chrome",
+        "package:opera": "npm run build:opera && gulp compress:opera",
+        "dist:all:minor": "gulp clean:dist && gulp upgrade:minor && npm run package:all",
+        "dist:all:medium": "gulp clean:dist && gulp upgrade:medium && npm run package:all",
+        "dist:all:major": "gulp clean:dist && gulp upgrade:major && npm run package:all",
+        "clean": "gulp clean:dist",
+        "dev:firefox": "web-ext run --source-dir ./build/firefox"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/LPauzies/twitch-companion"
+    },
+    "author": "lucas.pauzies@hotmail.fr",
+    "license": "GPL3",
+    "bugs": {
+        "url": "https://github.com/LPauzies/twitch-companion/issues"
+    },
+    "homepage": "https://github.com/LPauzies/twitch-companion"
 }
