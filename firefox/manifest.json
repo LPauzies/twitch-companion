@@ -1,9 +1,9 @@
 {
   "name": "Twitch Companion",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "default_locale": "en",
   "manifest_version": 2,
-  "description": "Gain time exploring Twitch through the power of this extension",
+  "description": "Access quickly to your favorite streams and search them by games. Be notified by popup of which one of your favorite streamers are online. Fully customizable application through parameters tab.",
   "content_scripts": [
     {
       "run_at": "document_start",

@@ -4,9 +4,16 @@
     <img align="center" src="common/icons/64.png" />
 </p>
 
-A way to easily interact with Twitch platform !
-
 [![CodeQL](https://github.com/LPauzies/twitch-companion/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/LPauzies/twitch-companion/actions/workflows/codeql.yml) &nbsp; [![Tag automation](https://github.com/LPauzies/twitch-companion/actions/workflows/tags.yml/badge.svg?branch=master)](https://github.com/LPauzies/twitch-companion/actions/workflows/tags.yml)
+
+## Description
+
+Twitch companion allows you to quickly access your favorite streamers. Search streamers by games and access it directly from the extension. Twitch companion allow you to get in touch of which one of your followed streamers is going live by using popup messages (can be disabled through parameters)
+
+The application is fully customizable through parameters tab.
+The application supports multiple languages such ENG, FR, ES and more.
+
+Source code available here : https://github.com/LPauzies/twitch-companion
 
 ## Requirements
 
