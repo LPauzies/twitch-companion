@@ -1,6 +1,6 @@
 {
     "name": "twitch-companion",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "description": "A way to easily interact with Twitch platform !",
     "dependencies": {
         "semver": "^7.3.2",
@@ -34,9 +34,9 @@
         "package:firefox": "npm run build:firefox && gulp compress:firefox",
         "package:chrome": "npm run build:chrome && gulp compress:chrome",
         "package:opera": "npm run build:opera && gulp compress:opera",
-        "dist:all:minor": "gulp clean:dist && gulp upgrade:minor && npm run package:all",
-        "dist:all:medium": "gulp clean:dist && gulp upgrade:medium && npm run package:all",
-        "dist:all:major": "gulp clean:dist && gulp upgrade:major && npm run package:all",
+        "dist:all:minor": "npm run clean && gulp clean:dist && gulp upgrade:minor && npm run package:all",
+        "dist:all:medium": "npm run clean && gulp clean:dist && gulp upgrade:medium && npm run package:all",
+        "dist:all:major": "npm run clean && gulp clean:dist && gulp upgrade:major && npm run package:all",
         "clean": "gulp clean:dist",
         "dev:firefox": "web-ext run --source-dir ./build/firefox"
     },

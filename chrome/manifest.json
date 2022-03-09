@@ -1,6 +1,6 @@
 {
     "name": "Twitch Companion",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "default_locale": "en",
     "manifest_version": 2,
     "description": "Access quickly to your favorite streams and search them by games. Be notified by popup of which one of your favorite streamers are online. Fully customizable application through parameters tab.",
