@@ -66,13 +66,13 @@ This guide will help you to get prepared for translation. Let's start!
 ## Application views
 
 <p align="center">
-    <img width="180" src="screenshots/1.JPG" />
+    <img width="180" src="screenshots/firefox/screen_1.JPG" />
     &nbsp;
-    <img width="180" src="screenshots/2.JPG" />
+    <img width="180" src="screenshots/firefox/screen_2.JPG" />
     &nbsp;
-    <img width="180" src="screenshots/3.JPG" />
+    <img width="180" src="screenshots/firefox/screen_3.JPG" />
     &nbsp;
-    <img width="180" src="screenshots/4.JPG" />
+    <img width="180" src="screenshots/firefox/screen_4.JPG" />
 </p>
 
 ## Fork

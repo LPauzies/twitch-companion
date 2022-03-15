@@ -56,11 +56,15 @@ let upgradeVersion = (kindOfUpgrade, previousVersion) => {
 
 let upgradePackageVersion = (kindOfUpgrade) => {
   var packageContent = JSON.parse(fs.readFileSync("package.json"));
-  packageContent.version = upgradeVersion(
-    kindOfUpgrade,
-    packageContent.version
-  );
+  var packageLockContent = JSON.parse(fs.readFileSync("package-lock.json"));
+  let upgradedVersion = upgradeVersion(kindOfUpgrade, packageContent.version);
+  packageContent.version = upgradedVersion;
+  packageLockContent.version = upgradedVersion;
   fs.writeFileSync("package.json", JSON.stringify(packageContent, null, 4));
+  fs.writeFileSync(
+    "package-lock.json",
+    JSON.stringify(packageLockContent, null, 4)
+  );
 };
 
 let upgradeManifestVersion = (osname, kindOfUpgrade) => {
