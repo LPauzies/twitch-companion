@@ -53,6 +53,21 @@ To package a version case of browser firefox, chrome or opera :
 $ npm run package:<browser>
 ```
 
+To upgrade the version of the app :
+```
+$ npm run dist:all:<state> # state will be 'minor', 'medium' or 'major'
+```
+
+To clean the build, node_modules and dist :
+```
+$ npm run clean:all
+```
+
+To make a zip of the source code (requested by Mozilla Foundation) :
+```
+$ npm run compress:source
+```
+
 ## Translation guide
 
 This guide will help you to get prepared for translation. Let's start!
