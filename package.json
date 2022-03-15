@@ -1,6 +1,6 @@
 {
     "name": "twitch-companion",
-    "version": "2.2.0",
+    "version": "2.2.2",
     "description": "A way to easily interact with Twitch platform !",
     "dependencies": {
         "semver": "^7.3.2",
