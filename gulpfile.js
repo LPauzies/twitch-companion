@@ -332,7 +332,7 @@ gulp.task("compress:source", function () {
   var v = JSON.parse(fs.readFileSync("package.json")).version;
 
   return gulp
-    .src(["*", "*/**", "!node_modules/**", "!build/**", "!dist/**"])
+    .src(["*", "*/**", "!node_modules/**", "!build/**", "!dist/**", "!.env"])
     .pipe(zip("twitch-companion-source-code-" + v + ".zip"))
     .pipe(gulp.dest("."));
 });
