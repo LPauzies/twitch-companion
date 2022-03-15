@@ -267,6 +267,24 @@ gulp.task("clean:dist", function (done) {
   done();
 });
 
+gulp.task("clean:build", function (done) {
+  del.sync(["build/*"]);
+  done();
+});
+
+gulp.task("clean:modules", function (done) {
+  del.sync(["node_modules/*"]);
+  done();
+});
+
+gulp.task(
+  "clean:all",
+  gulp.series("clean:dist", "clean:build", "clean:modules", function (done) {
+    done();
+  })
+);
+
+// Clean by browser
 gulp.task("clean:opera", function (done) {
   del.sync(["build/opera/*"]);
   done();
@@ -308,6 +326,15 @@ gulp.task("compress:firefox", function () {
     .src("build/firefox/**")
     .pipe(zip("twitch-companion-firefox-" + v + ".zip"))
     .pipe(gulp.dest("dist/"));
+});
+
+gulp.task("compress:source", function () {
+  var v = JSON.parse(fs.readFileSync("package.json")).version;
+
+  return gulp
+    .src(["*", "*/**", "!node_modules/**", "!build/**", "!dist/**"])
+    .pipe(zip("twitch-companion-source-code-" + v + ".zip"))
+    .pipe(gulp.dest("."));
 });
 
 // Task to manage handlebars templates
