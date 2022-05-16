@@ -6,6 +6,10 @@
 
 [![CodeQL](https://github.com/LPauzies/twitch-companion/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/LPauzies/twitch-companion/actions/workflows/codeql.yml) &nbsp; [![Tag automation](https://github.com/LPauzies/twitch-companion/actions/workflows/tags.yml/badge.svg?branch=master)](https://github.com/LPauzies/twitch-companion/actions/workflows/tags.yml)
 
+## Firefox version
+
+https://addons.mozilla.org/fr/firefox/addon/twitch-companion/
+
 ## Description
 
 Twitch companion allows you to quickly access your favorite streamers. Search streamers by games and access it directly from the extension. Twitch companion allow you to get in touch of which one of your followed streamers is going live by using popup messages (can be disabled through parameters)
