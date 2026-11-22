@@ -1,6 +1,6 @@
 {
     "name": "twitch-companion",
-    "version": "4.0.0",
+    "version": "5.0.0",
     "description": "Manifest V3 Twitch companion extension for Chrome and Firefox",
     "engines": {
         "node": ">=22.0.0"
