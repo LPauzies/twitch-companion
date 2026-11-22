@@ -15,53 +15,81 @@
     <div class="context-row">__MSG_m26__</div>
 </div>
 
-<div id="top-menu" class="top-menu">
-    <!--filter-->
-    <div id="filter-bar">
-        <input id="filterInput" placeholder="__MSG_m28__" type="text" autofocus maxlength="20">
+<header id="top-menu" class="top-menu">
+    <div id="filter-bar" class="input-with-icon">
+        <svg class="input-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input id="filterInput" placeholder="__MSG_m28__" type="text" autofocus maxlength="30">
     </div>
 
-    <!--refresh-->
-    <div id="refresh-btn" title="__MSG_m27__" data-placement="left" class="top-menu-btn tip">
-        <img src="../img/refresh.svg" alt=""/>
+    <button id="refresh-btn" type="button" title="__MSG_m27__" data-placement="bottom" class="top-menu-btn tip" aria-label="__MSG_m27__">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-2.64-6.36"/>
+            <path d="M21 3v6h-6"/>
+        </svg>
+    </button>
+
+    <div id="user-info"></div>
+</header>
+
+<nav id="menu" aria-label="Main navigation">
+    <div class="menu-group">
+        <button type="button" class="menu-btn tip" data-placement="right" title="__MSG_m33__" data-route="following" aria-label="__MSG_m33__">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+            </svg>
+        </button>
+
+        <button type="button" class="menu-btn tip" data-placement="right" title="__MSG_m81__" data-route="followedgames" aria-label="__MSG_m81__">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+            </svg>
+        </button>
+
+        <button type="button" class="menu-btn tip" data-placement="right" title="__MSG_m34__" data-route="browse" aria-label="__MSG_m34__">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="7" height="7" x="3" y="3" rx="1.5"/>
+                <rect width="7" height="7" x="14" y="3" rx="1.5"/>
+                <rect width="7" height="7" x="14" y="14" rx="1.5"/>
+                <rect width="7" height="7" x="3" y="14" rx="1.5"/>
+            </svg>
+        </button>
+
+        <button type="button" class="menu-btn tip" data-placement="right" title="__MSG_m51__" data-route="topstreams" aria-label="__MSG_m51__">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+        </button>
+
+        <button type="button" class="menu-btn tip" data-placement="right" title="__MSG_m35__" data-route="search" aria-label="__MSG_m35__">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.3-4.3"/>
+            </svg>
+        </button>
     </div>
 
-    <div id="user-info">
+    <div class="menu-group menu-group-bottom">
+        <button type="button" class="menu-btn tip" data-placement="right" title="__MSG_m36__" data-route="settings" aria-label="__MSG_m36__">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                <circle cx="12" cy="12" r="3"/>
+            </svg>
+        </button>
+
+        <button type="button" class="menu-btn tip" data-placement="right" title="__MSG_m37__" data-route="info" aria-label="__MSG_m37__">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 16v-4"/>
+                <path d="M12 8h.01"/>
+            </svg>
+        </button>
     </div>
+</nav>
 
-</div>
-
-<div id="menu">
-    <div class="menu-btn tip" data-placement="right" title="__MSG_m33__" data-route="following">
-        <img src="../img/heart.svg" alt=""/>
-    </div>
-
-    <div class="menu-btn tip" data-placement="right" title="__MSG_m81__" data-route="followedgames">
-        <img src="../img/heartbox.svg" alt=""/>
-    </div>
-
-    <div class="menu-btn tip" data-placement="right" title="__MSG_m34__" data-route="browse">
-        <img src="../img/joystick.svg" alt=""/>
-    </div>
-
-    <div class="menu-btn tip" data-placement="right" title="__MSG_m51__" data-route="topstreams">
-        <img src="../img/star.svg" alt=""/>
-    </div>
-
-    <div class="menu-btn tip" data-placement="right" title="__MSG_m35__" data-route="search">
-        <img src="../img/search.svg" alt=""/>
-    </div>
-
-    <div class="menu-btn tip" data-placement="right" title="__MSG_m36__" data-route="settings">
-        <img src="../img/settings.svg" alt=""/>
-    </div>
-
-    <div class="menu-btn tip" data-placement="right" title="__MSG_m37__" data-route="info">
-        <img src="../img/info.svg" alt=""/>
-    </div>
-</div>
-
-<div id="content">
+<main id="content">
     <div class="scroller">
         <div id="info-screen" class="screen spad">
             <div class="screen-content">
@@ -69,8 +97,8 @@
                 <div class="info-section info-version-section">
                     <h2 class="header">__MSG_m117__</h2>
                     <div class="info-version-row">
-                        <span id="app-version" class="app-version-badge"></span>
-                        &nbsp;&bull;&nbsp;
+                        <span id="app-version" class="app-version-text"></span>
+                        <span class="meta-sep" aria-hidden="true">&middot;</span>
                         <a id="app-release-link" class="js-tab" data-href="https://github.com/LPauzies/twitch-companion/releases">__MSG_m118__</a>
                     </div>
                 </div>
@@ -82,75 +110,67 @@
 
                 <div class="info-section">
                     <h2 class="header">__MSG_m59__</h2>
-
                     <div>
                         <a class="js-tab" data-href="https://github.com/LPauzies/twitch-companion#translation-guide">__MSG_m60__</a>
                     </div>
-
                 </div>
+
                 <div class="info-section">
                     <h2 class="header">__MSG_m77__</h2>
-
-                    <div>
+                    <div class="info-links-row">
                         <a class="js-tab" data-href="https://chromewebstore.google.com/">__MSG_m78__</a>
-                        &nbsp;&bull;&nbsp;
+                        <span class="meta-sep" aria-hidden="true">&middot;</span>
                         <a class="js-tab" data-href="https://addons.mozilla.org/firefox/addon/twitch-companion/">__MSG_m80__</a>
                     </div>
                 </div>
 
                 <div class="info-section">
                     <h2 class="header">__MSG_m64__</h2>
-
-                    <div class="contributor-list lazy-container">
-
-                    </div>
-
+                    <div class="contributor-list lazy-container"></div>
                 </div>
 
                 <div class="info-section">
                     <h2 class="header">__MSG_m24__</h2>
-
-                    <div class="share" style="display: flex; gap: 10px; align-items: center;">
-                        <div data-placement="top" class="js-tab social tip" title="X / Twitter" data-href="https://twitter.com/Cair0n_">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="rgb(85, 60, 135)" aria-hidden="true">
+                    <div class="share">
+                        <button type="button" data-placement="top" class="js-tab social tip" title="X / Twitter" data-href="https://twitter.com/Cair0n_" aria-label="X / Twitter">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                             </svg>
-                        </div>
-                        <div data-placement="top" class="js-tab social tip" title="LinkedIn" data-href="https://www.linkedin.com/in/lucas-pauzies/">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="rgb(85, 60, 135)" aria-hidden="true">
+                        </button>
+                        <button type="button" data-placement="top" class="js-tab social tip" title="LinkedIn" data-href="https://www.linkedin.com/in/lucas-pauzies/" aria-label="LinkedIn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                                 <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
                             </svg>
-                        </div>
-                        <div data-placement="top" class="js-tab social tip" title="GitHub" data-href="https://github.com/LPauzies">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="rgb(85, 60, 135)" aria-hidden="true">
+                        </button>
+                        <button type="button" data-placement="top" class="js-tab social tip" title="GitHub" data-href="https://github.com/LPauzies" aria-label="GitHub">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                                 <path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/>
                             </svg>
-                        </div>
+                        </button>
                     </div>
                 </div>
 
-                <div class="info-section">
+                <div class="info-section info-section-last">
                     <h2 class="header">__MSG_m116__</h2>
                     <button id="donate-btn" type="button" class="btn">__MSG_m43__</button>
                 </div>
 
             </div>
-
         </div>
 
         <div id="followed-game-screen" class="screen lazy-container">
-            <div class="screen-content"></div>
+            <div class="screen-content game-grid"></div>
         </div>
 
         <div id="browse-game-screen" class="screen lazy-container">
-            <div class="screen-content"></div>
+            <div class="screen-content game-grid"></div>
         </div>
 
         <div id="notifications-screen" class="screen lazy-container">
             <div class="js-notifications controls">
                 <h2 class="header">__MSG_m90__</h2>
 
-                <div class="info-section">
+                <div class="notif-description">
                     __MSG_m91__
                 </div>
                 <div class="dropdown">
@@ -214,26 +234,29 @@
         </div>
 
         <div id="search-screen" class="screen lazy-container">
-            <div id="search-menu" class="top-menu">
-                <div id="search-bar">
-                    <input id="searchInput" type="text" maxlength="30" placeholder="__MSG_m35__">
+            <div id="search-menu" class="search-panel-bar">
+                <div id="search-bar" class="input-with-icon">
+                    <svg class="input-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="m21 21-4.3-4.3"/>
+                    </svg>
+                    <input id="searchInput" type="text" maxlength="40" placeholder="__MSG_m35__">
                 </div>
-                <div id="search" class="top-menu-btn">
-                    <img src="../img/search.svg" alt=""/>
-                </div>
+                <button id="search" type="button" class="btn search-submit-btn" aria-label="__MSG_m35__">
+                    __MSG_m35__
+                </button>
             </div>
             <div class="screen-content"></div>
         </div>
 
         <div id="settings-screen" class="screen spad">
-            <div id="settings-container">
-            </div>
+            <div id="settings-container"></div>
         </div>
 
     </div>
 
     <div class="scroller__bar"></div>
-</div>
+</main>
 
 </body>
 </html>

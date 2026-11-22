@@ -1,11 +1,11 @@
 .scroller {
     height: 100%;
-    overflow-y: scroll;
-    /* -webkit-overflow-scrolling: touch; *//* uncomment to accelerate scrolling on iOS */
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
 .scroller::-webkit-scrollbar {
-    /* Preventing webkit cross-direction scrolling bug */
     width: 0;
 }
 
@@ -15,14 +15,16 @@
 
 .scroller__bar {
     position: absolute;
-    z-index: 5;
-    right: 0;
-    width: 10px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.6);
+    z-index: 25;
+    right: 3px;
+    width: 5px;
+    border-radius: 999px;
+    background: var(--scrollbar-thumb);
     display: none;
+    transition: background-color 140ms ease;
 }
 
+.scroller__bar:hover,
 .scroller__bar:active {
-    background: rgba(255, 255, 255, 1);
+    background: var(--scrollbar-thumb-active);
 }

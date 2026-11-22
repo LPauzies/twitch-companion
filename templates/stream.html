@@ -5,18 +5,25 @@
             {{h-uptime started_at}}
         </div>
         {{/if}}
-        <img class="lazy" alt="" data-original="{{ thumbnail_url }}"/>
+        <img class="lazy" alt="{{ user_name }}" data-original="{{ thumbnail_url }}"/>
     </div>
-    <span class="stream-info stream-title">
-            {{ user_name }}
-    </span>
-    <span class="stream-info stream-info-viewers">
-        {{#if vodcast}}
-        <span class="icon-vodcast" title="vodcast"></span>
-        {{/if}}
-            {{ game_name }} - {{h-num-format viewer_count}} __MSG_m45__
-        </span>
-    <span class="stream-info stream-info-status" title="{{ title }} ">
+    <div class="stream-body">
+        <div class="stream-top-row">
+            <span class="stream-info stream-title">{{ user_name }}</span>
+            <span class="stream-viewers-count">
+                {{#if vodcast}}
+                <span class="icon-vodcast" title="vodcast"></span>
+                {{else}}
+                <span class="live-dot" aria-hidden="true"></span>
+                {{/if}}
+                <span>{{h-num-format viewer_count}}</span>
+            </span>
+        </div>
+        <span class="stream-info stream-info-status" title="{{ title }}">
             {{ title }}
         </span>
+        <span class="stream-info stream-info-viewers">
+            {{ game_name }}
+        </span>
+    </div>
 </div>

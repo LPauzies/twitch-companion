@@ -1,140 +1,285 @@
-.radio-tip {
-    cursor: pointer;
-    display: inline-block;
-    margin-bottom: 7px;
+#settings-container {
+    display: flex;
+    flex-direction: column;
 }
 
 .control {
-    margin-bottom: 15px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.control:first-child {
+    padding-top: 2px;
+}
+
+.control:last-child {
+    border-bottom: none;
+}
+
+.control-desc {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-primary);
+    cursor: pointer;
+    line-height: 1.4;
 }
 
 .control-wrapper {
     display: block;
     position: relative;
-    margin-top: 5px;
+    margin-top: 8px;
 }
 
-.group-wrapper {
-    margin-bottom: 5px;
-    width: 120px;
-    float: left;
+/* Pure CSS Checkbox Toggle Switch */
+input[type="checkbox"],
+input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
 }
 
-.control-desc {
+input[type="checkbox"] + label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    margin: 0;
+    font-weight: 500;
+    user-select: none;
+}
+
+input[type="checkbox"] + label .control-desc {
     display: inline;
-    cursor: pointer;
+    font-weight: 500;
 }
 
-select {
-    padding: 5px 10px;
-    border-radius: 3px;
+input[type="checkbox"] + label span {
+    position: relative;
     display: inline-block;
-    cursor: pointer;
-    text-decoration: none;
-    background-color: rgb(106, 78, 158);
-    background-image: url(../img/down.svg);
-    background-position: right center;
-    background-repeat: no-repeat;
-    border: none;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.75);
-    color: white;
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    -webkit-text-shadow: 0 1px 0 rgba(0, 0, 0, 0.75);
-    -webkit-padding-end: 20px;
-    -webkit-padding-start: 5px;
+    width: 32px;
+    height: 18px;
+    flex-shrink: 0;
+    border-radius: 999px;
+    background: var(--bg-surface-hover);
+    border: 1px solid var(--border-strong);
+    transition: background-color 150ms var(--ease-out), border-color 150ms var(--ease-out);
 }
 
-input[type="text"] {
-    border-radius: 3px;
-    padding: 3px;
+input[type="checkbox"] + label span::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--text-secondary);
+    transition: transform 150ms var(--ease-out), background-color 150ms var(--ease-out);
+}
+
+input[type="checkbox"]:checked + label span {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+input[type="checkbox"]:checked + label span::after {
+    transform: translateX(14px);
+    background: #ffffff;
+}
+
+/* Pure CSS Radio Buttons */
+input[type="radio"] + label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    margin: 0 0 6px 0;
+    font-weight: 400;
+    user-select: none;
+}
+
+input[type="radio"] + label span {
+    position: relative;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--bg-input);
+    border: 1.5px solid var(--border-strong);
+    transition: border-color 140ms var(--ease-out), background-color 140ms var(--ease-out);
+}
+
+input[type="radio"] + label span::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ffffff;
+    transform: scale(0);
+    transition: transform 140ms var(--ease-out);
+}
+
+input[type="radio"]:checked + label span {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+input[type="radio"]:checked + label span::after {
+    transform: scale(1);
+}
+
+.radio-tip {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 12.5px;
+    color: var(--text-secondary);
+}
+
+input[type="radio"]:checked + label .radio-tip {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* Multi-checkbox Language Grid */
+.group-wrapper {
+    margin-bottom: 8px;
+    width: 50%;
+    float: left;
+    padding-right: 8px;
+}
+
+/* Modern Select */
+select {
+    width: 100%;
+    max-width: 260px;
+    height: 32px;
+    padding: 0 28px 0 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--text-secondary) 50%),
+                      linear-gradient(135deg, var(--text-secondary) 50%, transparent 50%);
+    background-position: calc(100% - 14px) 50%, calc(100% - 9px) 50%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    transition: border-color 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
+}
+
+select:hover {
+    border-color: var(--accent);
+}
+
+select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-ring);
     outline: none;
 }
 
+/* Text Inputs inside Settings */
 .control input[type="text"] {
-    width: 80%;
-    border: 1px solid black;
-    background-color: rgb(30, 30, 30);
-    color: rgb(221, 221, 221);
+    width: 100%;
+    max-width: 280px;
+    height: 32px;
+    padding: 0 10px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    font-size: 12.5px;
+    outline: none;
+    transition: border-color 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
 }
 
+.control input[type="text"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-ring);
+}
+
+/* Settings Action Button */
 input[type="button"] {
-    padding: 5px 10px;
-    border-radius: 3px;
-    display: inline-block;
+    height: 32px;
+    padding: 0 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    font-size: 12.5px;
+    font-weight: 600;
     cursor: pointer;
-    text-decoration: none;
-    background-color: rgb(106, 78, 158);
-    border: none;
-    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.75);
-    color: white;
+    transition: background-color 140ms var(--ease-out), border-color 140ms var(--ease-out);
 }
 
+input[type="button"]:hover {
+    background-color: var(--bg-surface-hover);
+    border-color: var(--accent);
+}
+
+/* Range Slider */
 input[type="range"] {
     -webkit-appearance: none;
-    background-color: rgb(185, 163, 277);
-    width: 200px;
-    height: 3px;
-    border-radius: 3px;
-}
-
-input[type="range"]::-moz-range-track {
-    background-color: rgb(185, 163, 277);
-    width: 200px;
-    height: 3px;
-    border-radius: 3px;
-}
-
-input[type="range"]::-moz-range-thumb {
-    background: rgb(185, 163, 277);
-    width: 15px;
-    height: 15px;
-    border-radius: 15px;
-    border: 3px solid rgb(100, 65, 165);
+    appearance: none;
+    background: var(--border-strong);
+    width: 190px;
+    height: 4px;
+    border-radius: 999px;
+    vertical-align: middle;
+    cursor: pointer;
 }
 
 input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    background: rgb(185, 163, 277);
-    width: 18px;
-    border-radius: 9px;
-    height: 18px;
-    border: 3px solid rgb(100, 65, 165);
+    appearance: none;
+    background: var(--accent);
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid var(--bg-canvas);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+    transition: transform 120ms var(--ease-out), background-color 120ms var(--ease-out);
 }
 
-input[type="range"] {
-    position: relative;
-    top: -2px;
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.12);
+    background: var(--accent-hover);
 }
 
-input[type="checkbox"], input[type="radio"] {
-    display: none;
+input[type="range"]::-moz-range-track {
+    background: var(--border-strong);
+    height: 4px;
+    border-radius: 999px;
 }
 
-input[type="checkbox"] + label span, input[type="radio"] + label span {
-    display: inline-block;
-    width: 19px;
-    height: 16px;
-    margin: -1px 4px 0 0;
-    vertical-align: middle;
-    cursor: pointer;
-    float: left;
+input[type="range"]::-moz-range-thumb {
+    background: var(--accent);
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid var(--bg-canvas);
 }
 
-input[type="radio"] + label span {
-    background: url(../img/radiobutton.svg) left top no-repeat;
-}
-
-input[type="radio"]:checked + label span {
-    background: url(../img/radiobutton.svg) -25px top no-repeat;
-}
-
-input[type="checkbox"] + label span {
-    background: url(../img/checkbox.svg) left top no-repeat;
-}
-
-input[type="checkbox"]:checked + label span {
-    background: url(../img/checkbox.svg) -25px top no-repeat;
+.range-helper {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-secondary);
 }
 
 input.toggle[type="checkbox"] + label div:nth-child(2) {
@@ -151,10 +296,4 @@ input.toggle[type="checkbox"]:checked + label div:nth-child(2) {
 
 input.toggle[type="checkbox"]:checked + label div:nth-child(3) {
     display: block;
-}
-
-.range-helper {
-    display: inline-block;
-    position: relative;
-    top: 0px;
 }

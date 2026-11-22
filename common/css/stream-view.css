@@ -1,57 +1,64 @@
 .stream {
-    border-bottom: 1px solid rgb(0, 0, 0);
-    border-top: 1px solid rgb(38, 38, 38);
-    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-subtle);
     position: relative;
-    color: rgb(120, 120, 120);
+    color: var(--text-secondary);
     cursor: pointer;
-    min-height: 40px;
-    font-size: 11px;
+    transition: background-color 140ms var(--ease-out);
 }
 
 .stream:hover {
-    background-color: rgb(35, 35, 35);
+    background-color: var(--bg-surface);
 }
 
 .stream:active {
-    background-color: rgb(25, 25, 25);
-    border-top: 1px solid rgb(25, 25, 25);
-    box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.25);
-    -webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.25);
+    background-color: var(--bg-surface-hover);
+}
+
+.stream .stream-preview {
+    width: 96px;
+    height: 54px;
+}
+
+.stream .stream-preview img {
+    transition: transform 200ms var(--ease-out);
+}
+
+.stream:hover .stream-preview img {
+    transform: scale(1.03);
 }
 
 .stream-uptime {
     position: absolute;
-    bottom: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.5);
-    color: rgba(255, 255, 255, 0.7);
-    text-shadow: none;
-    -webkit-text-shadow: none;
-    -moz-text-shadow: none;
-    padding: 2px;
+    bottom: 4px;
+    right: 4px;
+    background: rgba(10, 10, 14, 0.82);
+    color: #f4f4f8;
+    font-size: 10px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    padding: 2px 5px;
+    border-radius: 4px;
+    letter-spacing: 0.01em;
 }
 
-.stream .notify {
-    background: url("../img/bubble.png") no-repeat;
-    width: 17px;
-    height: 17px;
+.stream-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
-.stream .stream-title {
-    color: rgb(200, 200, 200);
-    font-weight: bold;
-    font-size: 13px;
-}
-
-.stream:hover .stream-title {
-    color: rgb(238, 238, 238);
-}
-
-.stream .stream-preview {
-    width: 74px;
-    height: 42px;
+.stream-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
 }
 
 .stream .stream-info {
@@ -59,7 +66,54 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.stream .stream-title {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: -0.01em;
     line-height: 1.3;
+}
+
+.stream:hover .stream-title {
+    color: var(--accent-hover);
+}
+
+.stream-viewers-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    font-size: 11.5px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-secondary);
+}
+
+.live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--live-dot);
+    flex-shrink: 0;
+}
+
+.stream .stream-info-status {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.3;
+}
+
+.stream .stream-info-viewers {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    line-height: 1.3;
+}
+
+.stream .stream-info-date {
+    font-size: 11px;
+    color: var(--text-muted);
 }
 
 .stream .icon-vodcast {
@@ -67,9 +121,8 @@
     background-image: url(../img/video.svg);
     background-repeat: no-repeat;
     background-size: contain;
-    width: 12.25px;
+    width: 12px;
     height: 10px;
     vertical-align: middle;
     opacity: 0.8;
 }
-

@@ -1,12 +1,11 @@
-.simple-version .item-image-container {
-    display: none !important;
+.simple-version .stream .stream-preview {
+    display: none;
 }
 
 .simple-version .stream-info-status {
-    display: none !important;
+    display: none;
 }
 
 .simple-version .stream {
-    padding: 5px 10px !important;
-    min-height: 0 !important;
+    padding: 7px 14px;
 }

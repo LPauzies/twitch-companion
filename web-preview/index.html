@@ -307,14 +307,18 @@
     <div class="brand">
       <img src="/build/chrome/common/icons/64.png" alt="Twitch Companion" />
       <div>
-        <h1>Twitch Companion v3.0.0</h1>
-        <p>Manifest V3 Compliant &bull; Chrome &amp; Firefox (Opera Removed) &bull; Manual CD Ready</p>
+        <h1 id="workbench-title">Twitch Companion</h1>
+        <p>Manifest V3 Compliant &bull; Chrome &amp; Firefox &bull; Manual CD Ready</p>
       </div>
     </div>
     <div class="toolbar">
       <div class="seg" role="group" aria-label="Browser target">
         <button id="btn-chrome" class="active" type="button">Chrome MV3</button>
         <button id="btn-firefox" type="button">Firefox MV3</button>
+      </div>
+      <div class="seg" role="group" aria-label="Popup theme preview">
+        <button id="btn-theme-dark" type="button">Dark</button>
+        <button id="btn-theme-light" class="active" type="button">Light</button>
       </div>
       <button id="btn-test-notif" class="action-btn" type="button">Test Live Notification</button>
       <button id="btn-rebuild" class="action-btn" type="button">Rebuild &amp; Re-Audit</button>
@@ -466,8 +470,25 @@
         frame.src = "/preview/popup.html?browser=" + browser + "&t=" + Date.now();
       }
 
+      function setPreviewTheme(theme) {
+        document.getElementById("btn-theme-dark").classList.toggle("active", theme === "dark");
+        document.getElementById("btn-theme-light").classList.toggle("active", theme === "white");
+        try {
+          var doc = frame.contentDocument || frame.contentWindow.document;
+          if (doc && doc.body) {
+            doc.body.classList.toggle("white-version", theme !== "dark");
+          }
+          if (frame.contentWindow && frame.contentWindow.bgBridge && frame.contentWindow.bgBridge.settings) {
+            var setting = frame.contentWindow.bgBridge.settings.get("themeType");
+            if (setting) setting.set("value", theme);
+          }
+        } catch (e) {}
+      }
+
       document.getElementById("btn-chrome").addEventListener("click", function () { setBrowser("chrome"); });
       document.getElementById("btn-firefox").addEventListener("click", function () { setBrowser("firefox"); });
+      document.getElementById("btn-theme-dark").addEventListener("click", function () { setPreviewTheme("dark"); });
+      document.getElementById("btn-theme-light").addEventListener("click", function () { setPreviewTheme("white"); });
 
       document.querySelectorAll(".tabs button").forEach(function (btn) {
         btn.addEventListener("click", function () {
@@ -510,6 +531,10 @@
       async function loadAudit() {
         var res = await fetch("/api/audit");
         var data = await res.json();
+
+        if (data.manifests && data.manifests.chrome && data.manifests.chrome.version) {
+          document.getElementById("workbench-title").textContent = "Twitch Companion v" + data.manifests.chrome.version;
+        }
 
         var chromeTag = document.getElementById("chrome-status");
         chromeTag.textContent = data.chrome.ok ? "PASS (" + data.chrome.checks.length + "/" + data.chrome.checks.length + ")" : "FAIL";

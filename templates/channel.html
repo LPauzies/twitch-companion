@@ -1,11 +1,11 @@
-<div class="stream js-filterable">
+<div class="stream stream-channel js-filterable">
     <div class="item-image-container channel-logo offline">
-        <img class="lazy" alt="" data-original="{{logo}}"/>
+        <img class="lazy" alt="{{to_name}}" data-original="{{logo}}"/>
     </div>
-    <span class="stream-info stream-title">
-            {{to_name}}
-    </span>
-    <span class="stream-info">
-            {{game}}
-    </span>
+    <div class="stream-body">
+        <span class="stream-info stream-title">{{to_name}}</span>
+        {{#if game}}
+        <span class="stream-info stream-info-viewers">{{game}}</span>
+        {{/if}}
+    </div>
 </div>

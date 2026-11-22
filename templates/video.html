@@ -1,19 +1,19 @@
 <div class="stream js-tab js-filterable" data-href="{{url}}">
     <div class="item-image-container stream-preview">
-        <img alt="" class="lazy" data-original="{{preview.medium}}"/>
+        <img alt="{{title}}" class="lazy" data-original="{{preview.medium}}"/>
         <div class="stream-uptime">
             {{h-date-format length}}
         </div>
     </div>
-    <span class="stream-info stream-title" title="{{title}}">
+    <div class="stream-body">
+        <span class="stream-info stream-title" title="{{title}}">
             {{title}}
-    </span>
-
-    <span class="stream-info">
-            {{channel.display_name}} - {{game}}
-    </span>
-
-    <span class="stream-info">
-        {{h-prettydate recorded_at}}
-    </span>
+        </span>
+        <span class="stream-info stream-info-viewers">
+            {{channel.display_name}}{{#if game}} &middot; {{game}}{{/if}}
+        </span>
+        <span class="stream-info stream-info-date">
+            {{h-prettydate recorded_at}}
+        </span>
+    </div>
 </div>

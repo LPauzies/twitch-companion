@@ -1,27 +1,25 @@
 {{#if authenticated}}
 <div class="user-panel">
-
     <div class="dropdown">
-        <div class="username dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="true">
-            <img class="lazy" alt="" src="{{logo}}"/>
-            {{name}}
-            <i class="icon-menu"></i>
-        </div>
+        <button class="username dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-expanded="false">
+            <img class="user-panel-avatar" alt="{{name}}" src="{{logo}}"/>
+            <span class="user-panel-name">{{name}}</span>
+            <svg class="user-panel-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m6 9 6 6 6-6"/>
+            </svg>
+        </button>
 
         <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu2">
             <li role="presentation">
-                <a role="menuitem"
-                   tabindex="-1" href="#user/notifications">__MSG_m85__</a>
+                <a role="menuitem" tabindex="-1" href="#user/notifications">__MSG_m85__</a>
             </li>
             <li class="divider"></li>
             <li role="presentation">
-                <a role="menuitem" id="logout-btn" tabindex="-1"
-                   href="#">__MSG_m53__</a>
+                <a role="menuitem" id="logout-btn" tabindex="-1" href="#">__MSG_m53__</a>
             </li>
         </ul>
     </div>
-
 </div>
 {{else}}
-<a class="btn" title="__MSG_m52__" id="login-btn">__MSG_m52__</a>
+<button type="button" class="btn btn-login" title="__MSG_m52__" id="login-btn">__MSG_m52__</button>
 {{/if}}

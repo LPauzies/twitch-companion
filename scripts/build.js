@@ -16,8 +16,6 @@ const POPUP_CSS_FILES = [
   "common/css/reset.css",
   "common/css/bootstrap.min.css",
   "common/css/basic.css",
-  "common/css/simple-view.css",
-  "common/css/white-view.css",
   "common/css/stream-view.css",
   "common/css/channel-view.css",
   "common/css/game-view.css",
@@ -25,6 +23,8 @@ const POPUP_CSS_FILES = [
   "common/css/menu-view.css",
   "common/css/info-view.css",
   "common/css/fontello.css",
+  "common/css/white-view.css",
+  "common/css/simple-view.css",
   "common/css/rtl.css",
   "common/css/baron.css"
 ];

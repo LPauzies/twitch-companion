@@ -1,98 +1,57 @@
+.direction-rtl #menu {
+    left: auto;
+    right: 0;
+    border-right: none;
+    border-left: 1px solid var(--border-subtle);
+}
+
+.direction-rtl #content {
+    left: 0;
+    right: var(--sidebar-width);
+}
+
+.direction-rtl .game {
+    left: 0;
+    right: var(--sidebar-width);
+}
+
+.direction-rtl #user-info {
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.direction-rtl .input-with-icon .input-icon {
+    left: auto;
+    right: 10px;
+}
+
+.direction-rtl .top-menu input[type="text"],
+.direction-rtl .search-panel-bar input[type="text"] {
+    padding: 0 30px 0 10px;
+}
+
+.direction-rtl .scroller__bar {
+    left: 3px;
+    right: auto;
+}
+
 .direction-rtl .dropdown-menu-left {
     left: auto;
     right: 0;
 }
 
-.direction-rtl .dropdown-menu.dropdown-menu-left:before {
-    right: 10px;
-    left: auto;
-}
-
-.direction-rtl .dropdown-menu.dropdown-menu-left:after {
-    right: 9px;
-    left: auto;
-}
-
 .direction-rtl .user-panel .dropdown-menu-right {
-    left: -5px !important;
+    left: 0;
     right: auto;
 }
 
-.direction-rtl .dropdown-menu.dropdown-menu-right:before {
-    left: 10px;
-    right: auto;
-}
-
-.direction-rtl .dropdown-menu.dropdown-menu-right:after {
-    left: 9px;
-    right: auto;
-}
-
-.direction-rtl #content {
-    left: 0px;
-    right: 40px;
-}
-
-.direction-rtl .item-image-container {
+.direction-rtl .group-wrapper {
     float: right;
-    margin-left: 10px;
-    margin-right: 0px;
-}
-
-.direction-rtl .menu-btn .icon {
-    margin-left: 0px;
-    margin-right: 4px;
-}
-
-.direction-rtl input[type="checkbox"] + label span, .direction-rtl input[type="radio"] + label span {
-    margin: -1px 0 0 4px;
-    float: right;
+    padding-right: 0;
+    padding-left: 8px;
 }
 
 .direction-rtl select {
-    background-position: left center;
-}
-
-.direction-rtl #filter-bar, .direction-rtl #search-bar {
-    float: right;
-    margin-left: 0px;
-    margin-right: 8px;
-}
-
-.direction-rtl #top-menu .top-menu-btn {
-    float: right;
-    margin-left: 5px;
-    margin-right: 5px;
-}
-
-.direction-rtl #login-btn {
-    float: left;
-    margin-left: 10px;
-    margin-right: 0px;
-}
-
-.direction-rtl .user-panel {
-    float: left;
-    margin-left: 20px;
-}
-
-.direction-rtl .stream {
-    background-position: 10px center;
-    background-repeat: no-repeat;
-}
-
-.direction-rtl .scroller__bar {
-    left: 0;
-    right: auto;
-}
-
-.direction-rtl .game {
-    right: 40px;
-    left: 0;
-}
-
-.direction-rtl .game .game-preview {
-    float: right;
-    margin-left: 10px;
-    margin-right: 0;
+    padding: 0 10px 0 28px;
+    background-position: 9px 50%, 14px 50%;
 }
