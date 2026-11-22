@@ -70,7 +70,12 @@
 }
 
 .game-grid > div:not(.screen-msg) {
-    display: contents;
+    display: block;
+    min-width: 0;
+}
+
+.game-grid > div:not(.screen-msg):has(> .js-filterable[style*="display: none"]) {
+    display: none;
 }
 
 .game-grid .screen-msg {

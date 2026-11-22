@@ -29,7 +29,10 @@
     collection.each(function () {
       var t = $(this);
       if (t.visible(true)) {
-        t.attr("src", t.attr("data-original"));
+        var orig = t.attr("data-original");
+        if (orig) {
+          t.attr("src", orig);
+        }
         t.removeClass("lazy");
       }
     });
@@ -214,6 +217,11 @@
     views.browseGames = new GameListView({
       el: "#browse-game-screen",
       collection: b.games,
+      messages: {
+        noresults: {
+          text: "__MSG_m48__",
+        },
+      },
     });
 
     new UserView({
@@ -688,6 +696,7 @@
   });
 
   var ListView = LazyRenderView.extend({
+    autoFetchOnShow: true,
     events: {
       "click .screen-msg-btn": "onMessageClick",
     },
@@ -703,6 +712,9 @@
       },
       nosearchquery: {
         text: "No search query",
+      },
+      noresults: {
+        text: "__MSG_m109__",
       },
     },
     itemView: null, // single item view
@@ -747,6 +759,11 @@
     loadNext: function () {
       if (this.collection.pagination) {
         this.collection.loadNext();
+      }
+    },
+    onshow: function () {
+      if (this.autoFetchOnShow && !this.collection.length && !this.collection.updating) {
+        this.update();
       }
     },
     update: function () {
@@ -977,6 +994,7 @@
   });
 
   var SearchView = ListView.extend({
+    autoFetchOnShow: false,
     events: {
       "keyup #searchInput": "onkeyup",
       "click #search": "search",
@@ -994,6 +1012,7 @@
   });
 
   var VideoListView = ListView.extend({
+    autoFetchOnShow: false,
     itemView: VideoView,
     setStream: function (channel) {
       this.lazyrender();

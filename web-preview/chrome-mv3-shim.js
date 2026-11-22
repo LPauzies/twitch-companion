@@ -151,7 +151,9 @@
       { _id: "509658", id: "509658", name: "Just Chatting", box_art_url: svgBox("Just Chatting", "#5b21b6"), viewers: 342100, channels: 4120, game: { _id: "509658", name: "Just Chatting" } },
       { _id: "21779", id: "21779", name: "League of Legends", box_art_url: svgBox("League of Legends", "#1d4ed8"), viewers: 215400, channels: 2310, game: { _id: "21779", name: "League of Legends" } },
       { _id: "516575", id: "516575", name: "VALORANT", box_art_url: svgBox("VALORANT", "#be123c"), viewers: 148900, channels: 1840, game: { _id: "516575", name: "VALORANT" } },
-      { _id: "1469308723", id: "1469308723", name: "Software & Dev", box_art_url: svgBox("Software & Dev", "#0f766e"), viewers: 28600, channels: 490, game: { _id: "1469308723", name: "Software & Dev" } }
+      { _id: "1469308723", id: "1469308723", name: "Software & Dev", box_art_url: svgBox("Software & Dev", "#0f766e"), viewers: 28600, channels: 490, game: { _id: "1469308723", name: "Software & Dev" } },
+      { _id: "32982", id: "32982", name: "Grand Theft Auto V", box_art_url: svgBox("GTA V", "#9a3412"), viewers: 134200, channels: 1620, game: { _id: "32982", name: "Grand Theft Auto V" } },
+      { _id: "27471", id: "27471", name: "Minecraft", box_art_url: svgBox("Minecraft", "#15803d"), viewers: 86400, channels: 1190, game: { _id: "27471", name: "Minecraft" } }
     ];
     initialLocal.followedChannels = initialLocal.following.map(function (s) {
       return {
@@ -163,6 +165,24 @@
         channel: { display_name: s.user_name, logo: "/build/" + targetBrowser + "/common/icons/user_default.png" }
       };
     });
+    writeArea("local", initialLocal);
+  } else if (!Array.isArray(initialLocal.games) || initialLocal.games.length === 0) {
+    var fallbackBox = function (label, bg) {
+      return "data:image/svg+xml," + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="136" height="190" viewBox="0 0 136 190">' +
+        '<rect width="136" height="190" fill="' + bg + '"/>' +
+        '<text x="68" y="98" font-family="sans-serif" font-size="13" font-weight="bold" fill="#fff" text-anchor="middle">' + label + '</text>' +
+        '</svg>'
+      );
+    };
+    initialLocal.games = [
+      { _id: "509658", id: "509658", name: "Just Chatting", box_art_url: fallbackBox("Just Chatting", "#5b21b6"), viewers: 342100, channels: 4120, game: { _id: "509658", name: "Just Chatting" } },
+      { _id: "21779", id: "21779", name: "League of Legends", box_art_url: fallbackBox("League of Legends", "#1d4ed8"), viewers: 215400, channels: 2310, game: { _id: "21779", name: "League of Legends" } },
+      { _id: "516575", id: "516575", name: "VALORANT", box_art_url: fallbackBox("VALORANT", "#be123c"), viewers: 148900, channels: 1840, game: { _id: "516575", name: "VALORANT" } },
+      { _id: "1469308723", id: "1469308723", name: "Software & Dev", box_art_url: fallbackBox("Software & Dev", "#0f766e"), viewers: 28600, channels: 490, game: { _id: "1469308723", name: "Software & Dev" } },
+      { _id: "32982", id: "32982", name: "Grand Theft Auto V", box_art_url: fallbackBox("GTA V", "#9a3412"), viewers: 134200, channels: 1620, game: { _id: "32982", name: "Grand Theft Auto V" } },
+      { _id: "27471", id: "27471", name: "Minecraft", box_art_url: fallbackBox("Minecraft", "#15803d"), viewers: 86400, channels: 1190, game: { _id: "27471", name: "Minecraft" } }
+    ];
     writeArea("local", initialLocal);
   }
 

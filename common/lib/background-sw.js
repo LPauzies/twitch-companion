@@ -374,7 +374,11 @@
 
     if (token) {
       await fetchCurrentUser(token);
-      await refreshFollowingStreams();
+      await Promise.all([
+        refreshFollowingStreams(),
+        refreshTopStreams(),
+        refreshTopGames()
+      ]);
     } else {
       await storageSet("local", {
         user: {
@@ -527,7 +531,7 @@
   function normalizeStream(s, isFavorite) {
     var thumb = s.thumbnail_url || "";
     if (thumb) {
-      thumb = thumb.replace("{width}", "134").replace("{height}", "70");
+      thumb = thumb.replace("{width}", "320").replace("{height}", "180");
     }
     var userName = s.user_name || s.display_name || s.user_login || s.broadcaster_login || "";
     var userLogin = s.user_login || s.broadcaster_login || userName.toLowerCase();
@@ -554,7 +558,7 @@
   }
 
   function normalizeGame(g) {
-    var boxArt = (g.box_art_url || "").replace("{width}", "136").replace("{height}", "190");
+    var boxArt = (g.box_art_url || "").replace("{width}", "272").replace("{height}", "380");
     return {
       _id: g.id,
       id: g.id,
@@ -567,7 +571,7 @@
   }
 
   function normalizeVideo(v) {
-    var thumb = (v.thumbnail_url || "").replace("%{width}", "134").replace("%{height}", "70");
+    var thumb = (v.thumbnail_url || "").replace("%{width}", "320").replace("%{height}", "180");
     return {
       _id: v.id,
       id: v.id,
@@ -1004,6 +1008,8 @@
     api.runtime.onStartup.addListener(function () {
       scheduleAlarms();
       refreshFollowingStreams();
+      refreshTopStreams();
+      refreshTopGames();
     });
   }
 
