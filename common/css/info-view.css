@@ -16,3 +16,20 @@
     margin-bottom: 2px;
 }
 
+.info-section .info-version-row {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.info-section .app-version-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(145, 71, 255, 0.18);
+    color: #d8c4ff;
+    border: 1px solid rgba(145, 71, 255, 0.35);
+}

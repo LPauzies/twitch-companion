@@ -76,6 +76,10 @@ async function startServer() {
     }
 
     const messages = JSON.parse(fs.readFileSync(localePath, "utf8"));
+    const manifestPath = path.join(ROOT, "build", browser, "manifest.json");
+    const manifest = fs.existsSync(manifestPath)
+      ? JSON.parse(fs.readFileSync(manifestPath, "utf8"))
+      : { version: "3.0.0" };
     let html = fs.readFileSync(popupPath, "utf8");
 
     // Rewrite relative paths so they resolve under /build/<browser>/common/
@@ -84,7 +88,7 @@ async function startServer() {
       .replace(/src="\.\.\//g, `src="/build/${browser}/common/`);
 
     const bootstrapScripts = [
-      `<script>window.__PREVIEW_BROWSER__ = ${JSON.stringify(browser)}; window.__PREVIEW_LOCALE_MESSAGES__ = ${JSON.stringify(messages)};</script>`,
+      `<script>window.__PREVIEW_BROWSER__ = ${JSON.stringify(browser)}; window.__PREVIEW_VERSION__ = ${JSON.stringify(manifest.version)}; window.__PREVIEW_LOCALE_MESSAGES__ = ${JSON.stringify(messages)};</script>`,
       `<script src="/web-preview/chrome-mv3-shim.js"></script>`,
       `<script src="/build/${browser}/background-sw.js"></script>`
     ].join("\n");

@@ -174,7 +174,7 @@
         return "/build/" + targetBrowser + "/" + rel.replace(/^\/+/, "");
       },
       getManifest: function () {
-        return { version: "3.0.0", manifest_version: 3 };
+        return { version: window.__PREVIEW_VERSION__ || "3.0.0", manifest_version: 3 };
       },
       onInstalled: { addListener: function () {} },
       onStartup: { addListener: function () {} },

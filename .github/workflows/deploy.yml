@@ -45,6 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.meta.outputs.version }}
+      commit_sha: ${{ steps.meta.outputs.sha }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -73,7 +74,9 @@ jobs:
 
       - name: Read extension version
         id: meta
-        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+        run: |
+          echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Build MV3 extensions
         env:
@@ -96,10 +99,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: twitch-companion-v${{ steps.meta.outputs.version }}
-          path: |
-            dist/*.zip
-            build/chrome/manifest.json
-            build/firefox/manifest.json
+          path: dist/*.zip
           retention-days: 30
 
   deploy_chrome:
@@ -110,6 +110,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.build_and_validate.outputs.commit_sha }}
 
       - name: Setup Node.js 24
         uses: actions/setup-node@v4
@@ -124,6 +126,7 @@ jobs:
 
       - name: Upload & Publish to Chrome Web Store
         env:
+          EXTENSION_VERSION: ${{ needs.build_and_validate.outputs.version }}
           CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
           CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
           CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
@@ -139,6 +142,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.build_and_validate.outputs.commit_sha }}
 
       - name: Setup Node.js 24
         uses: actions/setup-node@v4

@@ -390,6 +390,16 @@
       "click #donate-btn": "openPaypal",
     },
 
+    initialize: function () {
+      DefaultView.prototype.initialize.apply(this, arguments);
+      var version = utils.runtime.getVersion();
+      this.$("#app-version").text("v" + version);
+      this.$("#app-release-link").attr(
+        "data-href",
+        "https://github.com/LPauzies/twitch-companion/releases/tag/v" + version
+      );
+    },
+
     openPaypal: function () {
       utils.tabs.create({
         url: "https://www.paypal.com/donate/?hosted_button_id=UQHX9BP6QUH8G",

@@ -114,5 +114,7 @@
     "m113": { "message" : "Number of split notifications"},
     "m114": { "message" : "Other channels: "},
     "m115": { "message" : "Show notifications by default for new follows"},
-    "m116": { "message" : "Support me" }
+    "m116": { "message" : "Support me" },
+    "m117": { "message" : "Version" },
+    "m118": { "message" : "Release notes" }
 }

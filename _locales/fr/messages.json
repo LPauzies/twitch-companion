@@ -114,5 +114,7 @@
     "m113": { "message" : "Nombre de notifications séparées"},
     "m114": { "message" : "Autres chaînes: "},
     "m115": { "message" : "Montrer les notifications par défaut pour les nouveaux suivis"},
-    "m116": { "message" : "Me soutenir" }
+    "m116": { "message" : "Me soutenir" },
+    "m117": { "message" : "Version" },
+    "m118": { "message" : "Notes de version" }
 }

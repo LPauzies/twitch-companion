@@ -141,3 +141,10 @@
 .white-version .stream .icon-vodcast {
     background-image: url(../img/video-dark.svg);
 }
+
+.white-version .info-section .app-version-badge {
+    background: rgba(100, 65, 165, 0.1);
+    color: rgb(85, 60, 135);
+    border-color: rgba(100, 65, 165, 0.3);
+    text-shadow: none;
+}

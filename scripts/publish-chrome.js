@@ -20,7 +20,8 @@ async function main() {
   }
 
   const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, "package.json"), "utf8"));
-  const zipPath = path.join(ROOT, "dist", `twitch-companion-chrome-${pkg.version}.zip`);
+  const version = process.env.EXTENSION_VERSION || pkg.version;
+  const zipPath = path.join(ROOT, "dist", `twitch-companion-chrome-${version}.zip`);
   if (!fs.existsSync(zipPath)) {
     throw new Error(`Chrome package not found at ${zipPath}. Run \`npm run package:chrome\` first.`);
   }
