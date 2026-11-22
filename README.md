@@ -124,7 +124,6 @@ In your GitHub repository, navigate to **Settings → Secrets and variables → 
    - **`target`**: `all`, `chrome`, or `firefox`
    - **`version_bump`**: `none`, `patch`, `minor`, or `major`
    - **`chrome_publish_target`**: `default` (public) or `trustedTesters`
-   - **`dry_run`**: Keep `true` to build, run `npm run lint:all`, and download `.zip` artifacts without publishing; uncheck (`false`) to publish live to the stores and create a GitHub Release.
 
 ---
 

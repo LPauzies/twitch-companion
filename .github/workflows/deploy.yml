@@ -30,11 +30,6 @@ on:
         options:
           - default
           - trustedTesters
-      dry_run:
-        description: "Build, validate & upload artifacts WITHOUT publishing to stores"
-        type: boolean
-        required: true
-        default: true
 
 permissions:
   contents: write
@@ -105,7 +100,7 @@ jobs:
   deploy_chrome:
     name: Deploy to Chrome Web Store
     needs: build_and_validate
-    if: ${{ !inputs.dry_run && (inputs.target == 'all' || inputs.target == 'chrome') }}
+    if: ${{ inputs.target == 'all' || inputs.target == 'chrome' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -137,7 +132,7 @@ jobs:
   deploy_firefox:
     name: Deploy to Firefox Add-ons (AMO)
     needs: build_and_validate
-    if: ${{ !inputs.dry_run && (inputs.target == 'all' || inputs.target == 'firefox') }}
+    if: ${{ inputs.target == 'all' || inputs.target == 'firefox' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -177,7 +172,7 @@ jobs:
   github_release:
     name: Create GitHub Release
     needs: [build_and_validate, deploy_chrome, deploy_firefox]
-    if: ${{ !inputs.dry_run && always() && needs.build_and_validate.result == 'success' && (needs.deploy_chrome.result == 'success' || needs.deploy_chrome.result == 'skipped') && (needs.deploy_firefox.result == 'success' || needs.deploy_firefox.result == 'skipped') }}
+    if: ${{ always() && needs.build_and_validate.result == 'success' && (needs.deploy_chrome.result == 'success' || needs.deploy_chrome.result == 'skipped') && (needs.deploy_firefox.result == 'success' || needs.deploy_firefox.result == 'skipped') }}
     runs-on: ubuntu-latest
     steps:
       - name: Download built artifacts
