@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Twitch Companion v3.0.0 — Chrome & Firefox MV3 Workbench</title>
+  <meta name="description" content="Manifest V3 Twitch Companion browser extension for Chrome & Firefox with live preview workbench and automated manual CD workflows." />
+  <meta property="og:title" content="Twitch Companion v3.0.0 — Chrome & Firefox MV3" />
+  <meta property="og:description" content="Manifest V3 Twitch Companion extension workbench for Chrome Web Store & Firefox Add-ons (AMO)." />
+  <style>
+    :root {
+      --bg: #0f1016;
+      --surface: #171923;
+      --surface-2: #1f2230;
+      --border: #2c3144;
+      --text: #eef0f6;
+      --muted: #9aa2b8;
+      --accent: #9146ff;
+      --accent-soft: rgba(145, 70, 255, 0.16);
+      --ok: #22c55e;
+      --ok-soft: rgba(34, 197, 94, 0.14);
+      --warn: #f59e0b;
+      --err: #ef4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+    }
+    .brand h1 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .brand p {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .seg {
+      display: inline-flex;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .seg button {
+      background: transparent;
+      color: var(--muted);
+      border: none;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .seg button.active {
+      background: var(--accent);
+      color: #fff;
+    }
+    .action-btn {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .action-btn:hover {
+      border-color: var(--accent);
+    }
+    main {
+      display: grid;
+      grid-template-columns: 488px 1fr;
+      gap: 24px;
+      padding: 24px;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      flex: 1;
+    }
+    @media (max-width: 1024px) {
+      main { grid-template-columns: 1fr; }
+    }
+    .preview-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .browser-chrome {
+      width: 460px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    }
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .ext-icon-badge {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text);
+      font-weight: 600;
+    }
+    .ext-icon-badge img {
+      width: 18px;
+      height: 18px;
+    }
+    .badge-count {
+      background: var(--accent);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+    .iframe-wrap {
+      display: flex;
+      justify-content: center;
+      background: #1e1e1e;
+      padding: 10px;
+    }
+    iframe {
+      width: 440px;
+      height: 590px;
+      border: 1px solid #000;
+      background: #1e1e1e;
+    }
+    .event-bar {
+      width: 460px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .event-bar strong { color: var(--text); }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-2);
+    }
+    .tabs button {
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
+      padding: 12px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .tabs button.active {
+      color: var(--text);
+      border-bottom-color: var(--accent);
+      background: var(--surface);
+    }
+    .tab-pane {
+      display: none;
+      padding: 20px;
+      overflow-y: auto;
+      max-height: 660px;
+    }
+    .tab-pane.active { display: block; }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .card h3 {
+      font-size: 13px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .status-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .status-pass { background: var(--ok-soft); color: var(--ok); }
+    .status-fail { background: rgba(239, 68, 68, 0.16); color: var(--err); }
+    .check-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 12px;
+    }
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      color: var(--muted);
+    }
+    .check-list li span.dot {
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .pass-dot { color: var(--ok); }
+    .fail-dot { color: var(--err); }
+    pre {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #d8dee9;
+      overflow-x: auto;
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 14px 0 8px;
+    }
+    .section-title:first-child { margin-top: 0; }
+    .kv-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+    .kv-table th, .kv-table td {
+      text-align: left;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .kv-table th { color: var(--muted); font-weight: 600; }
+    code {
+      background: var(--surface-2);
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <img src="/build/chrome/common/icons/64.png" alt="Twitch Companion" />
+      <div>
+        <h1>Twitch Companion v3.0.0</h1>
+        <p>Manifest V3 Compliant &bull; Chrome &amp; Firefox (Opera Removed) &bull; Manual CD Ready</p>
+      </div>
+    </div>
+    <div class="toolbar">
+      <div class="seg" role="group" aria-label="Browser target">
+        <button id="btn-chrome" class="active" type="button">Chrome MV3</button>
+        <button id="btn-firefox" type="button">Firefox MV3</button>
+      </div>
+      <button id="btn-test-notif" class="action-btn" type="button">Test Live Notification</button>
+      <button id="btn-rebuild" class="action-btn" type="button">Rebuild &amp; Re-Audit</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="preview-column">
+      <div class="browser-chrome">
+        <div class="browser-bar">
+          <span class="ext-icon-badge">
+            <img src="/build/chrome/common/icons/32.png" alt="" />
+            <span id="frame-label">Chrome MV3 Popup (440&times;590)</span>
+            <span id="badge-pill" class="badge-count">3</span>
+          </span>
+          <span>Live Extension Runtime</span>
+        </div>
+        <div class="iframe-wrap">
+          <iframe id="popup-frame" src="/preview/popup.html?browser=chrome" title="Twitch Companion Popup Preview"></iframe>
+        </div>
+      </div>
+      <div class="event-bar" id="event-bar">
+        <span><strong>MV3 Runtime:</strong> Ready (click streams, search, settings, or themes above)</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="tabs">
+        <button class="active" data-tab="compliance" type="button">MV3 Compliance Audit</button>
+        <button data-tab="manifests" type="button">Chrome &amp; Firefox Manifests</button>
+        <button data-tab="cd" type="button">Manual CD Pipeline</button>
+      </div>
+
+      <div class="tab-pane active" id="tab-compliance">
+        <div class="grid-2">
+          <div class="card">
+            <h3>
+              Chrome Web Store (MV3)
+              <span id="chrome-status" class="status-tag status-pass">Checking...</span>
+            </h3>
+            <ul class="check-list" id="chrome-checks"></ul>
+          </div>
+          <div class="card">
+            <h3>
+              Firefox Add-ons / AMO (MV3)
+              <span id="firefox-status" class="status-tag status-pass">Checking...</span>
+            </h3>
+            <ul class="check-list" id="firefox-checks"></ul>
+          </div>
+        </div>
+
+        <h3 class="section-title">Technology Modernization Summary</h3>
+        <table class="kv-table">
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Previous (Legacy MV2)</th>
+              <th>Modernized (v3.0.0 MV3)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Extension Standard</td>
+              <td>Manifest V2 (deprecated Chrome/Firefox)</td>
+              <td>Manifest V3 (Chrome Service Worker + Offscreen, Firefox Event Page + Gecko Data Collection)</td>
+            </tr>
+            <tr>
+              <td>Browser Targets</td>
+              <td>Chrome, Firefox, Opera</td>
+              <td>Chrome &amp; Firefox only (Opera removed)</td>
+            </tr>
+            <tr>
+              <td>Build &amp; Lint</td>
+              <td>Gulp 4, deprecated <code>request</code>, <code>jshint</code> v2</td>
+              <td>Node 22 + <code>esbuild</code> + <code>archiver</code> + <code>eslint</code> v10 + <code>web-ext</code> v10</td>
+            </tr>
+            <tr>
+              <td>Frontend Libraries</td>
+              <td>jQuery 3.4.1, Handlebars 4.5.3, Underscore 1.8.3, Backbone 1.1.2</td>
+              <td>jQuery 4.1.0, Handlebars 4.7.10 (runtime-only, CSP-safe), Underscore 1.13.8, Backbone 1.6.1</td>
+            </tr>
+            <tr>
+              <td>Twitch API</td>
+              <td>Kraken v5 headers + deprecated <code>/users/follows</code> + XHR</td>
+              <td>Native <code>fetch()</code> + Helix <code>/channels/followed</code> &amp; <code>/streams/followed</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-pane" id="tab-manifests">
+        <h3 class="section-title">build/chrome/manifest.json</h3>
+        <pre id="chrome-manifest-pre">Loading...</pre>
+        <h3 class="section-title">build/firefox/manifest.json</h3>
+        <pre id="firefox-manifest-pre">Loading...</pre>
+      </div>
+
+      <div class="tab-pane" id="tab-cd">
+        <h3 class="section-title">Manual Continuous Deployment (.github/workflows/deploy.yml)</h3>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px; line-height: 1.5;">
+          Trigger deployments on demand from GitHub Actions &rarr; <strong>Manual CD — Deploy to Chrome &amp; Firefox Stores</strong> &rarr; <strong>Run workflow</strong>.
+          Choose store target (<code>all</code>, <code>chrome</code>, <code>firefox</code>), optional semver bump (<code>none</code>, <code>patch</code>, <code>minor</code>, <code>major</code>), and <code>dry_run</code> mode.
+        </p>
+
+        <h3 class="section-title">Required Repository Secrets</h3>
+        <table class="kv-table">
+          <thead>
+            <tr>
+              <th>Secret</th>
+              <th>Store</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>CHROME_EXTENSION_ID</code></td><td>Chrome Web Store</td><td>32-character extension ID from Chrome Developer Dashboard</td></tr>
+            <tr><td><code>CHROME_CLIENT_ID</code></td><td>Chrome Web Store</td><td>Google Cloud OAuth2 Client ID for Chrome Web Store API</td></tr>
+            <tr><td><code>CHROME_CLIENT_SECRET</code></td><td>Chrome Web Store</td><td>Google Cloud OAuth2 Client Secret</td></tr>
+            <tr><td><code>CHROME_REFRESH_TOKEN</code></td><td>Chrome Web Store</td><td>OAuth2 Refresh Token with <code>chromewebstore</code> scope</td></tr>
+            <tr><td><code>AMO_JWT_ISSUER</code></td><td>Firefox AMO</td><td>Mozilla Add-ons API JWT Issuer (<code>user:...</code>)</td></tr>
+            <tr><td><code>AMO_JWT_SECRET</code></td><td>Firefox AMO</td><td>Mozilla Add-ons API JWT Secret</td></tr>
+            <tr><td><code>TWITCH_SECRET</code></td><td>Shared (optional)</td><td>Twitch Client Secret (only if switching to OAuth code flow)</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="section-title">Workflow Pipeline Stages</h3>
+        <pre>1. build_and_validate  -> npm ci -> optional semver bump -> build Chrome &amp; Firefox MV3
+                       -> ESLint + Chrome MV3 validator + Firefox web-ext lint
+                       -> package Chrome .zip, Firefox .zip &amp; Mozilla source .zip
+2. deploy_chrome       -> scripts/publish-chrome.js (Chrome Web Store API v1.1 upload + publish)
+3. deploy_firefox      -> web-ext sign --channel=listed --upload-source-code source.zip
+4. github_release      -> Create GitHub Release vX.Y.Z with all store &amp; source archives attached</pre>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var currentBrowser = "chrome";
+      var frame = document.getElementById("popup-frame");
+      var frameLabel = document.getElementById("frame-label");
+      var eventBar = document.getElementById("event-bar");
+      var badgePill = document.getElementById("badge-pill");
+
+      function setBrowser(browser) {
+        currentBrowser = browser;
+        document.getElementById("btn-chrome").classList.toggle("active", browser === "chrome");
+        document.getElementById("btn-firefox").classList.toggle("active", browser === "firefox");
+        frameLabel.textContent = (browser === "chrome" ? "Chrome" : "Firefox") + " MV3 Popup (440×590)";
+        frame.src = "/preview/popup.html?browser=" + browser + "&t=" + Date.now();
+      }
+
+      document.getElementById("btn-chrome").addEventListener("click", function () { setBrowser("chrome"); });
+      document.getElementById("btn-firefox").addEventListener("click", function () { setBrowser("firefox"); });
+
+      document.querySelectorAll(".tabs button").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".tabs button").forEach(function (b) { b.classList.remove("active"); });
+          document.querySelectorAll(".tab-pane").forEach(function (p) { p.classList.remove("active"); });
+          btn.classList.add("active");
+          document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+        });
+      });
+
+      document.getElementById("btn-test-notif").addEventListener("click", function () {
+        try {
+          frame.contentWindow.chrome.runtime.sendMessage({
+            type: "TEST_NOTIFICATION",
+            streams: [{
+              id: "demo_live_" + Date.now(),
+              user_id: "u1",
+              user_login: "kamet0",
+              user_name: "Kamet0",
+              game_name: "League of Legends",
+              title: "Just went live! MV3 Notification Test"
+            }]
+          });
+        } catch (e) {}
+      });
+
+      window.addEventListener("message", function (ev) {
+        if (!ev.data || ev.data.source !== "tc-preview") return;
+        if (ev.data.type === "badge") {
+          badgePill.textContent = ev.data.detail.text || "0";
+        } else if (ev.data.type === "tab") {
+          eventBar.innerHTML = "<span><strong>MV3 tabs.create:</strong> " + ev.data.detail.url + "</span>";
+        } else if (ev.data.type === "notification") {
+          eventBar.innerHTML = "<span><strong>MV3 Notification:</strong> " + ev.data.detail.title + " — " + ev.data.detail.message.replace(/\n/g, " · ") + "</span>";
+        } else if (ev.data.type === "action") {
+          eventBar.innerHTML = "<span><strong>MV3 Event:</strong> " + ev.data.detail.label + "</span>";
+        }
+      });
+
+      async function loadAudit() {
+        var res = await fetch("/api/audit");
+        var data = await res.json();
+
+        var chromeTag = document.getElementById("chrome-status");
+        chromeTag.textContent = data.chrome.ok ? "PASS (" + data.chrome.checks.length + "/" + data.chrome.checks.length + ")" : "FAIL";
+        chromeTag.className = "status-tag " + (data.chrome.ok ? "status-pass" : "status-fail");
+
+        var chromeList = document.getElementById("chrome-checks");
+        chromeList.innerHTML = data.chrome.checks.map(function (c) {
+          return '<li><span class="dot ' + (c.pass ? 'pass-dot' : 'fail-dot') + '">' + (c.pass ? '✓' : '✗') + '</span><span>' + c.name + '</span></li>';
+        }).join("");
+
+        var ffTag = document.getElementById("firefox-status");
+        ffTag.textContent = data.firefox.ok ? "PASS (web-ext lint)" : "FAIL";
+        ffTag.className = "status-tag " + (data.firefox.ok ? "status-pass" : "status-fail");
+
+        var ffList = document.getElementById("firefox-checks");
+        ffList.innerHTML = data.firefox.checks.map(function (c) {
+          return '<li><span class="dot ' + (c.pass ? 'pass-dot' : 'fail-dot') + '">' + (c.pass ? '✓' : '✗') + '</span><span>' + c.name + '</span></li>';
+        }).join("");
+
+        document.getElementById("chrome-manifest-pre").textContent = JSON.stringify(data.manifests.chrome, null, 2);
+        document.getElementById("firefox-manifest-pre").textContent = JSON.stringify(data.manifests.firefox, null, 2);
+      }
+
+      document.getElementById("btn-rebuild").addEventListener("click", async function () {
+        eventBar.innerHTML = "<span><strong>Build:</strong> Rebuilding Chrome &amp; Firefox MV3 bundles...</span>";
+        await fetch("/api/rebuild", { method: "POST" });
+        await loadAudit();
+        setBrowser(currentBrowser);
+        eventBar.innerHTML = "<span><strong>Build:</strong> Rebuilt Chrome &amp; Firefox MV3 extensions cleanly.</span>";
+      });
+
+      loadAudit();
+    })();
+  </script>
+</body>
+</html>

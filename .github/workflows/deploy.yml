@@ -1,0 +1,193 @@
+name: "Manual CD — Deploy to Chrome & Firefox Stores"
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Store target(s) to build and deploy"
+        type: choice
+        required: true
+        default: "all"
+        options:
+          - all
+          - chrome
+          - firefox
+      version_bump:
+        description: "Optional version bump before building"
+        type: choice
+        required: true
+        default: "none"
+        options:
+          - none
+          - patch
+          - minor
+          - major
+      chrome_publish_target:
+        description: "Chrome Web Store publish audience"
+        type: choice
+        required: false
+        default: "default"
+        options:
+          - default
+          - trustedTesters
+      dry_run:
+        description: "Build, validate & upload artifacts WITHOUT publishing to stores"
+        type: boolean
+        required: true
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  build_and_validate:
+    name: Build, Lint & Package Extensions
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.meta.outputs.version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Bump version (optional)
+        if: ${{ inputs.version_bump != 'none' }}
+        run: |
+          npm run bump:${{ inputs.version_bump }}
+          VERSION=$(node -p "require('./package.json').version")
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json chrome/manifest.json firefox/manifest.json
+          git commit -m "chore(release): bump version to v${VERSION}"
+          git push
+
+      - name: Read extension version
+        id: meta
+        run: echo "version=$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Build MV3 extensions
+        env:
+          TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
+          TWITCH_SECRET: ${{ secrets.TWITCH_SECRET }}
+        run: npm run build:all
+
+      - name: Run ESLint + Chrome MV3 Validator + Firefox web-ext lint
+        run: npm run lint:all
+
+      - name: Package Chrome, Firefox & Mozilla Source Archives
+        env:
+          TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
+          TWITCH_SECRET: ${{ secrets.TWITCH_SECRET }}
+        run: |
+          npm run package:all
+          npm run package:source
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: twitch-companion-v${{ steps.meta.outputs.version }}
+          path: |
+            dist/*.zip
+            build/chrome/manifest.json
+            build/firefox/manifest.json
+          retention-days: 30
+
+  deploy_chrome:
+    name: Deploy to Chrome Web Store
+    needs: build_and_validate
+    if: ${{ !inputs.dry_run && (inputs.target == 'all' || inputs.target == 'chrome') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Download built artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: twitch-companion-v${{ needs.build_and_validate.outputs.version }}
+          path: dist
+
+      - name: Upload & Publish to Chrome Web Store
+        env:
+          CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+          CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          CHROME_PUBLISH_TARGET: ${{ inputs.chrome_publish_target }}
+        run: npm run publish:chrome
+
+  deploy_firefox:
+    name: Deploy to Firefox Add-ons (AMO)
+    needs: build_and_validate
+    if: ${{ !inputs.dry_run && (inputs.target == 'all' || inputs.target == 'firefox') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Rebuild Firefox bundle
+        env:
+          TWITCH_CLIENT_ID: ${{ secrets.TWITCH_CLIENT_ID }}
+          TWITCH_SECRET: ${{ secrets.TWITCH_SECRET }}
+        run: |
+          npm run build:firefox
+          npm run package:source
+
+      - name: Sign & Submit to Mozilla Add-ons (AMO)
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+        run: |
+          VERSION="${{ needs.build_and_validate.outputs.version }}"
+          npx web-ext sign \
+            --source-dir ./build/firefox \
+            --artifacts-dir ./dist/amo \
+            --channel=listed \
+            --upload-source-code "./dist/twitch-companion-source-${VERSION}.zip"
+
+  github_release:
+    name: Create GitHub Release
+    needs: [build_and_validate, deploy_chrome, deploy_firefox]
+    if: ${{ !inputs.dry_run && always() && needs.build_and_validate.result == 'success' && (needs.deploy_chrome.result == 'success' || needs.deploy_chrome.result == 'skipped') && (needs.deploy_firefox.result == 'success' || needs.deploy_firefox.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download built artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: twitch-companion-v${{ needs.build_and_validate.outputs.version }}
+          path: dist
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.build_and_validate.outputs.version }}
+          name: Twitch Companion v${{ needs.build_and_validate.outputs.version }}
+          generate_release_notes: true
+          files: |
+            dist/twitch-companion-chrome-${{ needs.build_and_validate.outputs.version }}.zip
+            dist/twitch-companion-firefox-${{ needs.build_and_validate.outputs.version }}.zip
+            dist/twitch-companion-source-${{ needs.build_and_validate.outputs.version }}.zip

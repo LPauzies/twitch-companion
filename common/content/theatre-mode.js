@@ -1,50 +1,42 @@
-(function (){
+(function () {
+  "use strict";
 
   var theatreBtnSelector = '[data-a-target="player-theatre-mode-button"]';
-  const MAX_TRIES = 400;
+  var MAX_TRIES = 400;
 
-  function waitUntilVisible(selector, callback){
+  function waitUntilVisible(selector, callback) {
     var tries = 0;
-    var tm = setInterval(function (){
+    var tm = setInterval(function () {
       var el = document.querySelector(selector);
-      if ( ++tries > MAX_TRIES ) {
+      if (++tries > MAX_TRIES) {
         clearInterval(tm);
         callback("timeout error");
+        return;
       }
 
-      if ( el && el.offsetHeight > 0 ) {
+      if (el && el.offsetHeight > 0) {
         clearInterval(tm);
         callback();
       }
-    }, 50)
+    }, 50);
   }
 
-  function wait(fn, callback){
-    if ( fn() ) {
-      return callback();
-    } else {
-      setTimeout(function (){
-        wait(fn, callback)
-      }, 250);
-    }
-  }
-
-  function turnOn(){
+  function turnOn() {
     var turnOnBtn = document.querySelector(theatreBtnSelector);
-    if ( turnOnBtn ) {
+    if (turnOnBtn) {
       turnOnBtn.click();
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function (){
-    var hash = window.location.search; // no iframes
-    var ref = document.referrer || ""; //inside player's iframe
-    if ( /mode=theatre/i.test(ref) || /mode=theatre/i.test(hash) ) {
-      waitUntilVisible(theatreBtnSelector, function (err){
-        if ( !err ) {
+  document.addEventListener("DOMContentLoaded", function () {
+    var query = window.location.search || "";
+    var ref = document.referrer || "";
+    if (/mode=theatre/i.test(ref) || /mode=theatre/i.test(query)) {
+      waitUntilVisible(theatreBtnSelector, function (err) {
+        if (!err) {
           turnOn();
         }
-      })
+      });
     }
-  })
+  });
 })();

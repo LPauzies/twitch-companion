@@ -10,10 +10,16 @@
   app.views = {};
   app.windowOpened = false;
 
+  var closePopup = function () {
+    if (window.self === window.top && typeof window.close === "function") {
+      window.close();
+    }
+  };
+
   app.resetScroll = function () {
     app.container.removeClass("shift");
     app.container.scrollTop(0);
-    if (utils.rbrowser != "firefox") {
+    if (utils.rbrowser != "firefox" && _baron) {
       _baron.update();
     }
   };
@@ -243,7 +249,7 @@
         var href = $(this).attr("data-href");
         utils.tabs.create({ url: href });
         e.preventDefault();
-        window.close();
+        closePopup();
       })
       .on("click", ".js-window", function (e) {
         var windowOpts = JSON.parse($(this).attr("data-window-opts") || "{}");
@@ -251,7 +257,7 @@
           $.extend({ url: $(this).attr("data-href") }, windowOpts)
         );
         e.preventDefault();
-        window.close();
+        closePopup();
       });
 
     $(".tip").tooltip();
@@ -345,7 +351,7 @@
         this.app.curView.$el.find(".js-filterable").each(function (i, e) {
           $(e).toggle(!!$(e).text().toLowerCase().match(rFilter));
         });
-        if (utils.rbrowser != "firefox") {
+        if (utils.rbrowser != "firefox" && _baron) {
           _baron.update();
         }
       }
@@ -457,9 +463,12 @@
     },
     initialize: function () {
       LazyRenderView.prototype.initialize.apply(this, arguments);
-      this.setDefaultTab(this.collection.get("defaultTab").get("value"));
-      this.changeThemeType(this.collection.get("themeType").get("value"));
-      this.toggleSimpleView(this.collection.get("simpleView").get("value"));
+      var defTab = this.collection.get("defaultTab");
+      var themeType = this.collection.get("themeType");
+      var simpleView = this.collection.get("simpleView");
+      this.setDefaultTab(defTab ? defTab.get("value") : "following");
+      this.changeThemeType(themeType ? themeType.get("value") : "white");
+      this.toggleSimpleView(simpleView ? simpleView.get("value") : false);
 
       this.$container = this.$el.find("#settings-container");
       this.listenTo(this.collection, "change", this.onModelChange);
@@ -609,12 +618,12 @@
       const canOpenStreamTab = e.which <= 2;
       if (canOpenStreamTab) {
         this.model.openStream();
-        window.close();
+        closePopup();
       }
     },
     openChat: function () {
       this.model.openChat();
-      window.close();
+      closePopup();
     },
     showMenu: function (e) {
       var self = this;
@@ -629,15 +638,15 @@
       menu.$el
         .on("click", ".js-open-chat", function () {
           self.model.openChat();
-          window.close();
+          closePopup();
         })
         .on("click", ".js-open-in-multitwitch", function () {
           self.model.openMultitwitch();
-          window.close();
+          closePopup();
         })
         .on("click", ".js-open-stream", function (e) {
           self.model.openStream($(e.target).attr("data-type"));
-          window.close();
+          closePopup();
         })
         .on("click", ".js-follow", function () {
           self.follow();

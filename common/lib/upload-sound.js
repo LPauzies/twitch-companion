@@ -1,101 +1,82 @@
-(function (){
-  var root = this
-    , uploadButton = document.querySelector('#uploadSound')
-    , toggleButton = document.querySelector('#toggleSound')
-    , playIcon = document.querySelector(".icon-play2")
-    , pauseIcon = document.querySelector(".icon-pause2")
-    , output = document.querySelector('#output')
-    , audio = new Audio()
-    ;
+(function () {
+  "use strict";
 
-  /**
-   *  Reads file and returns data-url
-   * @param opts.file
-   * @param opts.maxSize (in KBytes)
-   * @param cb
-   * @return {*}
-   */
-  var readFile = function (opts, cb){
+  var uploadButton = document.querySelector("#uploadSound");
+  var toggleButton = document.querySelector("#toggleSound");
+  var playIcon = document.querySelector(".icon-play2");
+  var pauseIcon = document.querySelector(".icon-pause2");
+  var output = document.querySelector("#output");
+  var audio = new Audio();
+  var api = typeof browser !== "undefined" && browser.runtime ? browser : (typeof chrome !== "undefined" ? chrome : null);
+
+  var readFile = function (opts, cb) {
     var file = opts.file;
     var maxSize = opts.maxSize;
     var fileReader = new FileReader();
 
-    if ( maxSize && ( file.size / 1024 ) > maxSize ) {
+    if (maxSize && file.size / 1024 > maxSize) {
       return cb("Max file size is " + maxSize + " kb");
     }
 
-    fileReader.onloadend = function (){
+    fileReader.onloadend = function () {
       return cb(null, this.result);
     };
 
-    fileReader.onabort = fileReader.onerror = function (){
-      switch (this.error.code) {
-        case FileError.NOT_FOUND_ERR:
-          cb("File not found!");
-          break;
-        case FileError.SECURITY_ERR:
-          cb("Security error!");
-          break;
-        case FileError.NOT_READABLE_ERR:
-          cb("File not readable!");
-          break;
-        case FileError.ENCODING_ERR:
-          cb("Encoding error in file!");
-          break;
-        default:
-          cb("An error occured while reading the file!");
-          break;
-      }
-
+    fileReader.onabort = fileReader.onerror = function () {
+      cb("An error occurred while reading the file!");
     };
+
     fileReader.readAsDataURL(file);
   };
 
-  function showPauseButton(){
+  function showPauseButton() {
     pauseIcon.style.display = "block";
     playIcon.style.display = "none";
   }
 
-  function showPlayButton(){
+  function showPlayButton() {
     pauseIcon.style.display = "none";
     playIcon.style.display = "block";
   }
 
-  toggleButton.addEventListener('click', function (){
-    if ( audio.src ) {
-      if ( audio.paused ) {
-        audio.play();
+  function persistCustomSound(dataUrl) {
+    if (api && api.runtime && api.runtime.sendMessage) {
+      api.runtime.sendMessage({ type: "SET_CUSTOM_SOUND", dataUrl: dataUrl });
+    }
+    try {
+      localStorage["customSound"] = dataUrl;
+    } catch (e) {
+      // Ignore storage error
+    }
+  }
+
+  toggleButton.addEventListener("click", function () {
+    if (audio.src) {
+      if (audio.paused) {
+        audio.play().catch(function () {});
       } else {
         audio.pause();
       }
     }
-  })
+  });
 
-  audio.addEventListener("play", function (){
-    showPauseButton();
-  })
+  audio.addEventListener("play", showPauseButton);
+  audio.addEventListener("pause", showPlayButton);
+  audio.addEventListener("ended", showPlayButton);
 
-  audio.addEventListener("pause", function (){
-    showPlayButton();
-  })
-
-  uploadButton.addEventListener('change', function (e){
+  uploadButton.addEventListener("change", function () {
     var file = this.files[0];
-    if ( file ) {
-      readFile({file: file, maxSize: 200}, function (err, res){
-        output.textContent = err ? err : "sound uploaded";
-
-        if ( !err ) {
-          audio.src = "";
+    if (file) {
+      readFile({ file: file, maxSize: 200 }, function (err, res) {
+        output.textContent = err ? err : "Sound uploaded and saved";
+        if (!err) {
           audio.src = res;
-          audio.play();
-          localStorage["customSound"] = res;
+          audio.play().catch(function () {});
+          persistCustomSound(res);
         }
-
       });
     }
   });
 
   showPlayButton();
-
-}).call(this);
+})();
