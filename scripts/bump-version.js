@@ -35,3 +35,14 @@ for (const file of filesToUpdate) {
   fs.writeFileSync(file, JSON.stringify(json, null, indent) + "\n", "utf8");
   console.log(`[bump] Updated ${path.relative(ROOT, file)} -> ${nextVersion}`);
 }
+
+const lockPath = path.join(ROOT, "package-lock.json");
+if (fs.existsSync(lockPath)) {
+  const lock = JSON.parse(fs.readFileSync(lockPath, "utf8"));
+  lock.version = nextVersion;
+  if (lock.packages && lock.packages[""]) {
+    lock.packages[""].version = nextVersion;
+  }
+  fs.writeFileSync(lockPath, JSON.stringify(lock, null, 2) + "\n", "utf8");
+  console.log(`[bump] Updated package-lock.json -> ${nextVersion}`);
+}

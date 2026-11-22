@@ -51,7 +51,7 @@ During the audit of the original v2.2.2 codebase, the following compliance block
 ## Development & Build Commands
 
 ### Requirements
-- **Node.js 20+** (Node 22 recommended)
+- **Node.js 22+** (Node 24 LTS used in CI/CD)
 
 ### Install Dependencies
 ```bash
