@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Twitch Companion",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "default_locale": "en",
   "description": "Quickly access your favorite Twitch streams, browse games, and receive live notifications. Fully customizable.",
   "minimum_chrome_version": "114",
